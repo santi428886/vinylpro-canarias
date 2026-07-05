@@ -48,8 +48,6 @@ function expandSeeds(seeds: ProductSeed[]): Product[] {
           slug,
           nombre,
           coleccion: seed.coleccion,
-          imagen: seed.imagen,
-          imagenes: seed.imagenes,
           precio: seed.basePrice + (variant.priceOffset ?? 0),
           grosor: seed.grosor,
           color: variant.color,

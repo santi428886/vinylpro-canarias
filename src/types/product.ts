@@ -84,7 +84,9 @@ export type ProductSeed = Omit<
   | "nivelUso"
   | "habitaciones"
   | "temaColeccion"
+  | "imagen"
   | "imagenHover"
+  | "imagenes"
 > & {
   baseName: string;
   baseSlug: string;

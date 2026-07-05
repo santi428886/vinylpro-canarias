@@ -3,10 +3,11 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
-import FloorImage from "@/components/ui/FloorImage";
+import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import { getVariantLabel } from "@/data/floor-patterns";
 import {
   DEFAULT_FLOOR_FALLBACK,
-  FLOOR_GALLERY_LABELS,
+  parseTextureToken,
   sanitizeFloorPath,
 } from "@/data/floor-images";
 
@@ -25,8 +26,10 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
 
   const getSrc = (i: number) => gallery[i] ?? DEFAULT_FLOOR_FALLBACK;
 
-  const getLabel = (i: number) =>
-    FLOOR_GALLERY_LABELS[i] ?? FLOOR_GALLERY_LABELS[0];
+  const getLabel = (i: number) => {
+    const parsed = parseTextureToken(getSrc(i));
+    return getVariantLabel(parsed?.variant ?? i);
+  };
 
   const goNext = useCallback(() => {
     setActive((i) => (i + 1) % gallery.length);
@@ -54,12 +57,10 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
                 transition={{ duration: 0.4 }}
                 className="absolute inset-0"
               >
-                <FloorImage
+                <VinylFloorPattern
                   src={getSrc(active)}
                   alt={`${alt} — ${getLabel(active)}`}
-                  priority
                   className="object-cover transition duration-700 group-hover:scale-[1.02]"
-                  sizes="(max-width: 1024px) 100vw, 55vw"
                 />
               </motion.div>
             </AnimatePresence>
@@ -116,7 +117,7 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
                 }`}
               >
                 <div className="relative h-20 w-20">
-                  <FloorImage src={getSrc(i)} alt={getLabel(i)} sizes="80px" />
+                  <VinylFloorPattern src={getSrc(i)} alt={getLabel(i)} />
                 </div>
                 <span className="mt-1 block max-w-20 truncate text-center text-[10px] text-muted">
                   {getLabel(i).split(" ")[0]}
@@ -150,11 +151,10 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
               </button>
             </div>
             <div className="relative flex-1">
-              <FloorImage
+              <VinylFloorPattern
                 src={getSrc(active)}
                 alt={`${alt} — ${getLabel(active)}`}
                 className="object-contain p-4"
-                sizes="100vw"
               />
             </div>
             {gallery.length > 1 && (

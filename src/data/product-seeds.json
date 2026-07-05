@@ -5,12 +5,6 @@
     "basePrice": 24.9,
     "basePopularity": 98,
     "coleccion": "Essentials",
-    "imagen": "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80"
-    ],
     "grosor": "5 mm",
     "acabado": "Mate satinado",
     "resistencia": "Clase 33 AC5",
@@ -31,11 +25,6 @@
     "basePrice": 25.9,
     "basePopularity": 95,
     "coleccion": "Essentials",
-    "imagen": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80"
-    ],
     "grosor": "5 mm",
     "acabado": "Mate",
     "resistencia": "Clase 33 AC5",
@@ -56,11 +45,6 @@
     "basePrice": 34.9,
     "basePopularity": 88,
     "coleccion": "Signature",
-    "imagen": "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80"
-    ],
     "grosor": "6 mm",
     "acabado": "Premium texturizado",
     "resistencia": "Clase 34 AC6",
@@ -81,11 +65,6 @@
     "basePrice": 27.9,
     "basePopularity": 92,
     "coleccion": "Industrial",
-    "imagen": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80"
-    ],
     "grosor": "5.5 mm",
     "acabado": "Cemento pulido",
     "resistencia": "Clase 33 AC5",
@@ -106,11 +85,6 @@
     "basePrice": 29.9,
     "basePopularity": 85,
     "coleccion": "Stone",
-    "imagen": "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
-      "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=1200&q=80"
-    ],
     "grosor": "5 mm",
     "acabado": "Piedra natural",
     "resistencia": "Clase 33 AC5",
@@ -131,11 +105,6 @@
     "basePrice": 29.9,
     "basePopularity": 90,
     "coleccion": "Signature",
-    "imagen": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80"
-    ],
     "grosor": "6 mm",
     "acabado": "Brillo satinado",
     "resistencia": "Clase 34 AC6",
@@ -156,11 +125,6 @@
     "basePrice": 36.9,
     "basePopularity": 82,
     "coleccion": "Signature",
-    "imagen": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80"
-    ],
     "grosor": "6.5 mm",
     "acabado": "Espiga francesa",
     "resistencia": "Clase 34 AC6",
@@ -181,11 +145,6 @@
     "basePrice": 31.9,
     "basePopularity": 78,
     "coleccion": "Stone",
-    "imagen": "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80"
-    ],
     "grosor": "5 mm",
     "acabado": "Mármol pulido",
     "resistencia": "Clase 33 AC5",
@@ -206,11 +165,6 @@
     "basePrice": 26.9,
     "basePopularity": 87,
     "coleccion": "Industrial",
-    "imagen": "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80"
-    ],
     "grosor": "5 mm",
     "acabado": "Hormigón crudo",
     "resistencia": "Clase 33 AC5",
@@ -231,11 +185,6 @@
     "basePrice": 27.5,
     "basePopularity": 84,
     "coleccion": "Essentials",
-    "imagen": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80",
-      "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=1200&q=80"
-    ],
     "grosor": "5 mm",
     "acabado": "Rústico cepillado",
     "resistencia": "Clase 33 AC5",
@@ -256,11 +205,6 @@
     "basePrice": 30.5,
     "basePopularity": 76,
     "coleccion": "Stone",
-    "imagen": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80"
-    ],
     "grosor": "5.5 mm",
     "acabado": "Pizarra natural",
     "resistencia": "Clase 33 AC5",
@@ -281,11 +225,6 @@
     "basePrice": 35.5,
     "basePopularity": 80,
     "coleccion": "Signature",
-    "imagen": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80",
-    "imagenes": [
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80"
-    ],
     "grosor": "6 mm",
     "acabado": "Espiga italiana",
     "resistencia": "Clase 34 AC6",

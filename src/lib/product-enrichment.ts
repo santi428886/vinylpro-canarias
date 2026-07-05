@@ -99,7 +99,9 @@ export function enrichProduct(
     | "nivelUso"
     | "habitaciones"
     | "temaColeccion"
+    | "imagen"
     | "imagenHover"
+    | "imagenes"
     | "precioMaterial"
   >,
 ): Product {

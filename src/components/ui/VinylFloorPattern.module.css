@@ -1,0 +1,104 @@
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.root::before,
+.root::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Grain overlay — subtle wood / vinyl texture */
+.root::before {
+  opacity: 0.35;
+  background-image:
+    repeating-linear-gradient(
+      7deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.025) 2px,
+      rgba(0, 0, 0, 0.025) 3px
+    ),
+    repeating-linear-gradient(
+      97deg,
+      transparent 0px,
+      transparent 14px,
+      rgba(255, 255, 255, 0.04) 14px,
+      rgba(255, 255, 255, 0.04) 15px
+    );
+  mix-blend-mode: multiply;
+}
+
+/* Variant 1 — lama close-up: stronger longitudinal joints */
+.root[data-variant="1"]::before {
+  opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 48px,
+      rgba(0, 0, 0, 0.08) 48px,
+      rgba(0, 0, 0, 0.08) 49px,
+      transparent 49px,
+      transparent 96px
+    ),
+    repeating-linear-gradient(
+      12deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(0, 0, 0, 0.03) 8px,
+      rgba(0, 0, 0, 0.03) 9px
+    );
+}
+
+/* Variant 2 — installed tone: warm ambient wash */
+.root[data-variant="2"]::after {
+  opacity: 0.22;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 236, 210, 0.35) 0%,
+    transparent 45%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+
+.root[data-variant="2"]::before {
+  opacity: 0.28;
+}
+
+.root[data-kind="herringbone"]::before {
+  opacity: 0.25;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0px,
+    transparent 6px,
+    rgba(0, 0, 0, 0.04) 6px,
+    rgba(0, 0, 0, 0.04) 7px
+  );
+}
+
+.root[data-kind="stone"]::before,
+.root[data-kind="concrete"]::before {
+  opacity: 0.2;
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(0, 0, 0, 0.06) 0%, transparent 35%);
+  mix-blend-mode: overlay;
+}
+
+.label {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  border-radius: 0.375rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.25rem 0.5rem;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+}

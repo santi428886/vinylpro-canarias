@@ -7,7 +7,7 @@ import { COLLECTION_LABELS } from "@/types/product";
 import { buildWhatsAppUrl } from "@/lib/constants";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
-import FloorImage from "@/components/ui/FloorImage";
+import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
 import FavoriteButton from "./FavoriteButton";
 import CompareToggle from "./CompareToggle";
 import ProductBadgeTag from "./ProductBadgeTag";
@@ -32,17 +32,15 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         href={`/modelo/${product.slug}`}
         className="relative flex-[7] min-h-0 overflow-hidden bg-surface"
       >
-        <FloorImage
+        <VinylFloorPattern
           src={product.imagen}
           alt={product.nombre}
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-0"
-          sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <FloorImage
+        <VinylFloorPattern
           src={product.imagenHover}
           alt=""
           className="object-cover opacity-0 transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-100"
-          sizes="(max-width: 768px) 100vw, 50vw"
         />
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />

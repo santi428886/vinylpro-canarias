@@ -1,82 +1,77 @@
 import type { CollectionTheme, ColorTone, FloorSystem, FloorType } from "@/types/product";
+import { FLOOR_VARIANT_LABELS } from "@/data/floor-patterns";
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
- * TEXTURAS DEL CATÁLOGO — VinylPro Canarias
+ * RESOLUCIÓN DE CATEGORÍAS — VinylPro Canarias
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * El catálogo NO usa fotografías externas. Cada producto muestra una textura
- * CSS controlada que representa su tipo de suelo vinílico/PVC.
+ * El catálogo NO usa fotografías externas. Cada producto se asigna a una de
+ * 14 categorías de textura CSS (ver VinylFloorPattern + floor-patterns.ts).
  *
  * CÓMO CAMBIAR EN EL FUTURO:
- * 1. Fotos reales → sustituye textureToken() por rutas en /public/images/floors/
- *    y adapta FloorImage.tsx para servir archivos locales.
- * 2. Ajustar colores CSS → edita TEXTURE_CONFIG en floor-texture-styles.ts
- * 3. Nueva categoría → añádela aquí + en floor-texture-styles.ts + resolveImageCategory()
+ * 1. Ajustar colores CSS → edita src/data/floor-patterns.ts
+ * 2. Nueva categoría → añádela aquí + en floor-patterns.ts + resolveImageCategory()
+ * 3. Fotos reales → sustituye VinylFloorPattern por archivos en /public/images/floors/
  *
  * PROHIBIDO en catálogo: casas, cocinas, agua, plástico, objetos, decoración.
  */
 
-/** Prefijo de token — FloorImage detecta esto y renderiza CSS, no <Image> */
+/** Prefijo de token — VinylFloorPattern detecta esto y renderiza CSS */
 export const TEXTURE_TOKEN_PREFIX = "vinyl-texture:";
 
 export const DEFAULT_TEXTURE_CATEGORY = "roble-claro" as const;
 
-/** Categorías comerciales → textura vinílica correspondiente */
+/** 14 categorías comerciales → textura vinílica correspondiente */
 export type VinylFloorCategory =
-  | "roble-claro" // Roble claro — lamas madera clara
-  | "roble-medio" // Roble medio — roble natural
-  | "roble-oscuro" // Roble oscuro — madera oscura
-  | "gris-claro" // Gris claro — vinilo gris perla
-  | "gris-medio" // Gris medio — vinilo gris neutro
-  | "gris-oscuro" // Gris oscuro — antracita
-  | "espiga-clara" // Espiga clara — patrón herringbone claro
-  | "espiga-oscura" // Espiga oscura — herringbone nogal/ébano
-  | "piedra-beige" // Piedra beige — efecto caliza
-  | "piedra-gris" // Piedra gris — efecto pizarra
-  | "hormigon-claro" // Hormigón claro — microcemento
-  | "hormigon-oscuro" // Hormigón oscuro — cemento antracita
-  | "nogal" // Nogal — walnut
-  | "blanco-nordico" // Blanco nórdico — roble escandinavo blanco
-  | "negro-premium"; // Negro premium — wenge/ébano
+  | "roble-claro"
+  | "roble-medio"
+  | "roble-oscuro"
+  | "nogal"
+  | "gris-claro"
+  | "gris-oscuro"
+  | "espiga-clara"
+  | "espiga-oscura"
+  | "hormigon-claro"
+  | "hormigon-oscuro"
+  | "piedra-beige"
+  | "piedra-gris"
+  | "blanco-nordico"
+  | "negro-premium";
 
 export const FLOOR_CATEGORY_LABELS: Record<VinylFloorCategory, string> = {
   "roble-claro": "Roble claro",
   "roble-medio": "Roble medio",
   "roble-oscuro": "Roble oscuro",
+  nogal: "Nogal",
   "gris-claro": "Gris claro",
-  "gris-medio": "Gris medio",
   "gris-oscuro": "Gris oscuro",
   "espiga-clara": "Espiga clara",
   "espiga-oscura": "Espiga oscura",
-  "piedra-beige": "Piedra beige",
-  "piedra-gris": "Piedra gris",
   "hormigon-claro": "Hormigón claro",
   "hormigon-oscuro": "Hormigón oscuro",
-  nogal: "Nogal",
+  "piedra-beige": "Piedra beige",
+  "piedra-gris": "Piedra gris",
   "blanco-nordico": "Blanco nórdico",
   "negro-premium": "Negro premium",
 };
 
-/** Etiquetas galería producto — todas son vistas de la misma textura */
-export const FLOOR_GALLERY_LABELS = [
-  "Textura principal",
-  "Vista de lamas",
-  "Detalle de veta",
-  "Variación tonal",
-] as const;
+/** Etiquetas galería producto — 3 vistas CSS de la misma textura */
+export const FLOOR_GALLERY_LABELS = FLOOR_VARIANT_LABELS;
+
+const GALLERY_VARIANT_COUNT = 3;
 
 /** Genera token interno: vinyl-texture:roble-claro:0 */
 export function textureToken(
   category: VinylFloorCategory,
   variant: number,
 ): string {
-  return `${TEXTURE_TOKEN_PREFIX}${category}:${variant % 4}`;
+  return `${TEXTURE_TOKEN_PREFIX}${category}:${variant % GALLERY_VARIANT_COUNT}`;
 }
 
 export const DEFAULT_FLOOR_FALLBACK = textureToken(DEFAULT_TEXTURE_CATEGORY, 0);
 
-/** Fallback entre categorías similares (siempre otra textura de suelo) */
+/** Fallback entre categorías similares */
 export const CATEGORY_FALLBACK_CHAIN: Record<
   VinylFloorCategory,
   VinylFloorCategory[]
@@ -84,16 +79,15 @@ export const CATEGORY_FALLBACK_CHAIN: Record<
   "roble-claro": ["roble-claro", "roble-medio", "blanco-nordico"],
   "roble-medio": ["roble-medio", "roble-claro", "roble-oscuro"],
   "roble-oscuro": ["roble-oscuro", "roble-medio", "nogal"],
-  "gris-claro": ["gris-claro", "gris-medio", "blanco-nordico"],
-  "gris-medio": ["gris-medio", "gris-claro", "gris-oscuro"],
-  "gris-oscuro": ["gris-oscuro", "gris-medio", "hormigon-oscuro"],
+  nogal: ["nogal", "roble-oscuro", "espiga-oscura"],
+  "gris-claro": ["gris-claro", "blanco-nordico", "hormigon-claro"],
+  "gris-oscuro": ["gris-oscuro", "hormigon-oscuro", "negro-premium"],
   "espiga-clara": ["espiga-clara", "roble-claro", "espiga-oscura"],
   "espiga-oscura": ["espiga-oscura", "espiga-clara", "nogal"],
   "piedra-beige": ["piedra-beige", "piedra-gris", "roble-claro"],
-  "piedra-gris": ["piedra-gris", "piedra-beige", "gris-medio"],
+  "piedra-gris": ["piedra-gris", "piedra-beige", "gris-oscuro"],
   "hormigon-claro": ["hormigon-claro", "gris-claro", "hormigon-oscuro"],
   "hormigon-oscuro": ["hormigon-oscuro", "hormigon-claro", "gris-oscuro"],
-  nogal: ["nogal", "roble-oscuro", "espiga-oscura"],
   "blanco-nordico": ["blanco-nordico", "roble-claro", "gris-claro"],
   "negro-premium": ["negro-premium", "roble-oscuro", "gris-oscuro"],
 };
@@ -131,7 +125,6 @@ export function textureTokenToOgImage(src: string): string {
 
 /**
  * Asigna categoría según nombre, color, tipo, colección y acabado.
- * Roble claro → roble-claro | Espiga → espiga | Hormigón → hormigon | etc.
  */
 export function resolveImageCategory(input: {
   tipo: FloorType;
@@ -144,6 +137,7 @@ export function resolveImageCategory(input: {
 }): VinylFloorCategory {
   const name = input.nombre.toLowerCase();
   const acabado = input.acabado.toLowerCase();
+  const coleccion = input.coleccion.toLowerCase();
 
   if (input.tipo === "espiga") {
     return input.color === "oscuro" ? "espiga-oscura" : "espiga-clara";
@@ -155,6 +149,7 @@ export function resolveImageCategory(input: {
       name.includes("caliza") ||
       name.includes("arena") ||
       name.includes("marfil") ||
+      name.includes("carrara") ||
       input.color === "claro"
     ) {
       return "piedra-beige";
@@ -202,11 +197,10 @@ export function resolveImageCategory(input: {
     name.includes("grafito") ||
     name.includes("plata") ||
     name.includes("cemento") ||
-    name.includes("antracita")
+    name.includes("antracita") ||
+    coleccion === "industrial"
   ) {
-    if (input.color === "oscuro") return "gris-oscuro";
-    if (input.color === "medio") return "gris-medio";
-    return "gris-claro";
+    return input.color === "oscuro" ? "gris-oscuro" : "gris-claro";
   }
 
   if (input.tipo === "roble") {
@@ -219,6 +213,10 @@ export function resolveImageCategory(input: {
     return input.color === "oscuro" ? "gris-oscuro" : "blanco-nordico";
   }
 
+  if (input.temaColeccion === "industrial") {
+    return input.color === "oscuro" ? "hormigon-oscuro" : "hormigon-claro";
+  }
+
   if (input.color === "claro") return "roble-claro";
   if (input.color === "medio") return "roble-medio";
   return "roble-oscuro";
@@ -226,7 +224,7 @@ export function resolveImageCategory(input: {
 
 /**
  * Devuelve tokens de textura CSS — sin URLs externas.
- * imagen = textura principal | imagenHover = variante | imagenes = 4 vistas
+ * imagen = textura principal | imagenHover = lama | imagenes = 3 vistas
  */
 export function resolveProductImages(
   slug: string,
@@ -241,10 +239,10 @@ export function resolveProductImages(
   },
 ): { imagen: string; imagenHover: string; imagenes: string[] } {
   const category = resolveImageCategory(input);
-  const offset = hashSlug(slug) % 4;
+  const offset = hashSlug(slug) % GALLERY_VARIANT_COUNT;
 
-  const imagenes = [0, 1, 2, 3].map((v) =>
-    textureToken(category, (offset + v) % 4),
+  const imagenes = [0, 1, 2].map((v) =>
+    textureToken(category, (offset + v) % GALLERY_VARIANT_COUNT),
   );
 
   return {
@@ -254,7 +252,7 @@ export function resolveProductImages(
   };
 }
 
-/** Normaliza cualquier valor legacy a token de textura válido */
+/** Normaliza cualquier valor legacy (URL externa o token) a token de textura válido */
 export function sanitizeFloorPath(path: string | undefined): string {
   const parsed = path ? parseTextureToken(path) : null;
   if (parsed) return path!;
@@ -268,7 +266,9 @@ export function getFallbackChain(src?: string): string[] {
 
   return [
     ...new Set(
-      chain.flatMap((c) => [0, 1, 2, 3].map((v) => textureToken(c, v))),
+      chain.flatMap((c) =>
+        [0, 1, 2].map((v) => textureToken(c, v)),
+      ),
     ),
   ];
 }
