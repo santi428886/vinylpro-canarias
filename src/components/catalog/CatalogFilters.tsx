@@ -2,6 +2,7 @@
 
 import type {
   ColorTone,
+  FloorSystem,
   FloorType,
   ProductFilters,
   SortOption,
@@ -32,6 +33,12 @@ const usageOptions: { value: UsageType; label: string }[] = [
   { value: "bano", label: "Baño" },
   { value: "cocina", label: "Cocina" },
   { value: "local", label: "Local comercial" },
+];
+
+const sistemaOptions: { value: FloorSystem; label: string }[] = [
+  { value: "spc-click", label: "SPC Click" },
+  { value: "adhesivo", label: "Adhesivo" },
+  { value: "rollo", label: "En rollo" },
 ];
 
 const sortOptions: { value: SortOption; label: string }[] = [
@@ -130,6 +137,14 @@ export default function CatalogFilters({
           }
         />
         <FilterGroup
+          title="Sistema"
+          options={sistemaOptions}
+          selected={filters.sistema}
+          onToggle={(v) =>
+            onChange({ ...filters, sistema: toggleFilter(filters.sistema, v) })
+          }
+        />
+        <FilterGroup
           title="Uso"
           options={usageOptions}
           selected={filters.uso}
@@ -141,7 +156,8 @@ export default function CatalogFilters({
 
       {(filters.color?.length ||
         filters.tipo?.length ||
-        filters.uso?.length) && (
+        filters.uso?.length ||
+        filters.sistema?.length) && (
         <button
           type="button"
           onClick={() => onChange({ sort: filters.sort })}

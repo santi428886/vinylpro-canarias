@@ -39,6 +39,9 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       <div className="flex flex-1 flex-col p-5">
         <div className="flex flex-wrap gap-1.5">
           <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs text-muted capitalize">
+            {product.sistema.replace("-", " ")}
+          </span>
+          <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs text-muted capitalize">
             {product.tipo}
           </span>
           <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs text-muted capitalize">

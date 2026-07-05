@@ -1,5 +1,6 @@
 import productSeeds from "@/data/product-seeds.json";
 import type {
+  FloorSystem,
   Product,
   ProductFilters,
   ProductSeed,
@@ -15,10 +16,26 @@ function slugify(text: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
+function resolveSistema(seed: ProductSeed): FloorSystem {
+  if (seed.sistema) return seed.sistema;
+  if (
+    seed.baseSlug.includes("hormigon") ||
+    seed.baseSlug.includes("cemento")
+  ) {
+    return "rollo";
+  }
+  if (seed.tipo === "piedra" && seed.baseSlug.includes("slate")) {
+    return "adhesivo";
+  }
+  return "spc-click";
+}
+
 function expandSeeds(seeds: ProductSeed[]): Product[] {
   const products: Product[] = [];
 
   for (const seed of seeds) {
+    const sistema = resolveSistema(seed);
+
     for (const variant of seed.variants) {
       const nombre = `${seed.baseName} ${variant.suffix}`;
       const slug = slugify(`${seed.baseSlug}-${variant.suffix}`);
@@ -39,6 +56,7 @@ function expandSeeds(seeds: ProductSeed[]): Product[] {
         descripcion: seed.descripcion,
         caracteristicas: seed.caracteristicas,
         tipo: seed.tipo,
+        sistema,
         usos: seed.usos,
         popularidad:
           seed.basePopularity + (variant.popularityOffset ?? 0),
@@ -62,6 +80,7 @@ function expandVariants(products: Product[]): Product[] {
       precio: p.precio + 2.5,
       grosor: "8 mm",
       acabado: `${p.acabado} reforzado`,
+      sistema: p.sistema === "adhesivo" ? "spc-click" : p.sistema,
       popularidad: p.popularidad - 8,
       descripcion: `${p.descripcion} Versión XL con mayor grosor y resistencia.`,
     });
@@ -72,8 +91,9 @@ function expandVariants(products: Product[]): Product[] {
       slug: `${p.slug}-compact`,
       nombre: `${p.nombre} Compact`,
       precio: p.precio - 1.5,
-      grosor: "4 mm",
+      grosor: "2.5 mm",
       acabado: `${p.acabado} compacto`,
+      sistema: "adhesivo",
       popularidad: p.popularidad - 12,
       descripcion: `${p.descripcion} Versión compacta ideal para reformas rápidas.`,
     });
@@ -135,6 +155,9 @@ export function filterProducts(
     result = result.filter((p) =>
       p.usos.some((u) => filters.uso!.includes(u)),
     );
+  }
+  if (filters.sistema?.length) {
+    result = result.filter((p) => filters.sistema!.includes(p.sistema));
   }
 
   return sortProducts(result, filters.sort ?? "popularidad");
