@@ -4,11 +4,10 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
-import { getVariantLabel } from "@/data/floor-patterns";
 import {
   DEFAULT_FLOOR_FALLBACK,
-  parseTextureToken,
-  sanitizeFloorPath,
+  filterValidFloorImages,
+  getGalleryLabel,
 } from "@/data/floor-images";
 
 type ProductGalleryProps = {
@@ -19,17 +18,14 @@ type ProductGalleryProps = {
 export default function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
+
   const gallery =
-    images.length > 0
-      ? images.map(sanitizeFloorPath)
+    filterValidFloorImages(images).length > 0
+      ? filterValidFloorImages(images)
       : [DEFAULT_FLOOR_FALLBACK];
 
   const getSrc = (i: number) => gallery[i] ?? DEFAULT_FLOOR_FALLBACK;
-
-  const getLabel = (i: number) => {
-    const parsed = parseTextureToken(getSrc(i));
-    return getVariantLabel(parsed?.variant ?? i);
-  };
+  const getLabel = (i: number) => getGalleryLabel(getSrc(i));
 
   const goNext = useCallback(() => {
     setActive((i) => (i + 1) % gallery.length);

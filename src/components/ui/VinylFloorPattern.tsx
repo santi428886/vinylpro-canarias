@@ -4,6 +4,7 @@ import {
   DEFAULT_FLOOR_FALLBACK,
   parseTextureToken,
   sanitizeFloorPath,
+  type FloorGalleryRole,
   type VinylFloorCategory,
 } from "@/data/floor-images";
 import {
@@ -14,39 +15,37 @@ import {
 import styles from "./VinylFloorPattern.module.css";
 
 type VinylFloorPatternProps = {
-  /** Token `vinyl-texture:category:variant` from product data */
   src?: string;
   category?: VinylFloorCategory;
-  variant?: number;
+  role?: FloorGalleryRole;
   alt: string;
   className?: string;
   showLabel?: boolean;
 };
 
 /**
- * CSS-only vinyl floor texture — no external images.
- * Variants: 0 textura · 1 lama · 2 tono instalado
+ * Textura CSS de suelo vinílico — sin imágenes externas.
+ * Roles: installed · texture · detail
  */
 export default function VinylFloorPattern({
   src,
   category: categoryProp,
-  variant: variantProp = 0,
+  role: roleProp = "installed",
   alt,
   className = "",
   showLabel = false,
 }: VinylFloorPatternProps) {
   let category = categoryProp;
-  let variant = variantProp;
+  let role = roleProp;
 
   if (src) {
     const token = sanitizeFloorPath(src);
     const parsed = parseTextureToken(token) ?? parseTextureToken(DEFAULT_FLOOR_FALLBACK)!;
     category = parsed.category;
-    variant = parsed.variant;
+    role = parsed.role;
   }
 
   const resolvedCategory = category ?? "roble-claro";
-  const resolvedVariant = variant % 3;
   const kind = PATTERN_CONFIG[resolvedCategory]?.kind ?? "wood";
 
   return (
@@ -54,9 +53,9 @@ export default function VinylFloorPattern({
       role="img"
       aria-label={alt}
       className={`${styles.root} ${className}`}
-      data-variant={String(resolvedVariant)}
+      data-role={role}
       data-kind={kind}
-      style={getPatternStyle(resolvedCategory, resolvedVariant)}
+      style={getPatternStyle(resolvedCategory, role)}
     >
       {showLabel && (
         <span className={styles.label}>{getPatternLabel(resolvedCategory)}</span>

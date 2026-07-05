@@ -1,14 +1,13 @@
 import type { CSSProperties } from "react";
-import type { VinylFloorCategory } from "@/data/floor-images";
+import type { FloorGalleryRole, VinylFloorCategory } from "@/data/floor-images";
 
-/** Gallery / hover views — textura principal, detalle de lama, tono instalado */
-export type VinylFloorVariant = 0 | 1 | 2;
-
-export const FLOOR_VARIANT_LABELS = [
-  "Textura",
-  "Vista de lama",
-  "Tono instalado",
-] as const;
+/**
+ * Estilos CSS por categoría y rol de galería.
+ *
+ * installed → lamas amplias + sombreado de suelo instalado
+ * texture   → primer plano de lamas vinílicas
+ * detail    → zoom de veta / patrón
+ */
 
 type PatternConfig = {
   description: string;
@@ -185,7 +184,6 @@ function herringboneStyle(base: string, light: string, dark: string): CSSPropert
     `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
       <rect width="56" height="56" fill="${base}"/>
       <path d="M0 28 L14 14 L28 28 L14 42 Z" fill="${light}" stroke="${dark}" stroke-width="0.6"/>
-      <path d="M28 0 L42 14 L56 0 L42 14 L28 28 Z" fill="${light}" stroke="${dark}" stroke-width="0.6" opacity="0.9"/>
       <path d="M28 28 L42 42 L56 28 L42 14 Z" fill="${light}" stroke="${dark}" stroke-width="0.6"/>
       <path d="M0 28 L14 42 L28 28 L14 14 Z" fill="${light}" stroke="${dark}" stroke-width="0.6" opacity="0.85"/>
     </svg>`,
@@ -204,8 +202,6 @@ function stoneStyle(base: string, speck1: string, speck2: string): CSSProperties
       radial-gradient(circle at 20% 30%, ${speck1} 0%, transparent 8%),
       radial-gradient(circle at 70% 60%, ${speck2} 0%, transparent 6%),
       radial-gradient(circle at 45% 80%, ${speck1} 0%, transparent 7%),
-      radial-gradient(circle at 85% 20%, ${speck2} 0%, transparent 5%),
-      radial-gradient(circle at 10% 70%, ${speck2} 0%, transparent 4%),
       linear-gradient(160deg, ${base} 0%, ${speck1} 100%)
     `,
   };
@@ -217,14 +213,7 @@ function concreteStyle(base: string, patch: string, shadow: string): CSSProperti
     backgroundImage: `
       radial-gradient(ellipse at 30% 40%, ${patch} 0%, transparent 50%),
       radial-gradient(ellipse at 75% 65%, ${shadow} 0%, transparent 45%),
-      radial-gradient(ellipse at 55% 15%, ${patch} 0%, transparent 40%),
-      repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        transparent 3px,
-        rgba(0,0,0,0.03) 3px,
-        rgba(0,0,0,0.03) 4px
-      ),
+      repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px),
       linear-gradient(180deg, ${base} 0%, ${patch} 100%)
     `,
   };
@@ -246,52 +235,68 @@ function baseStyleForConfig(config: PatternConfig): CSSProperties {
   }
 }
 
-/** Base CSS background per category + variant (0=textura, 1=lama, 2=tono instalado) */
+function installedOverlay(style: CSSProperties, config: PatternConfig): CSSProperties {
+  let wide = style;
+  if (config.kind === "wood" || config.kind === "grey") {
+    wide = config.kind === "grey"
+      ? greyPlankStyle(config.base, config.mid, "rgba(255,255,255,0.1)", 90)
+      : woodPlankStyle(config.base, config.mid, config.dark, 90);
+  }
+  return {
+    ...wide,
+    backgroundImage: `
+      linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 12%, rgba(0,0,0,0.07) 100%),
+      ${typeof wide.backgroundImage === "string" ? wide.backgroundImage : ""}
+    `.trim(),
+  };
+}
+
+function detailZoom(style: CSSProperties, config: PatternConfig): CSSProperties {
+  if (config.kind === "herringbone") {
+    return {
+      ...style,
+      backgroundSize: "40px 40px",
+      filter: "contrast(1.1) saturate(1.05)",
+    };
+  }
+  if (config.kind === "stone" || config.kind === "concrete") {
+    return { ...style, filter: "contrast(1.12) brightness(1.02)" };
+  }
+  const zoomed =
+    config.kind === "grey"
+      ? greyPlankStyle(config.base, config.mid, "rgba(255,255,255,0.08)", 52)
+      : woodPlankStyle(config.base, config.mid, config.dark, 52, 1);
+  return { ...zoomed, filter: "contrast(1.08) saturate(1.06)" };
+}
+
 export function getPatternStyle(
   category: VinylFloorCategory,
-  variant: number,
+  role: FloorGalleryRole,
 ): CSSProperties {
   const config = PATTERN_CONFIG[category] ?? PATTERN_CONFIG["roble-claro"];
-  const v = (variant % 3) as VinylFloorVariant;
+  const base = baseStyleForConfig(config);
 
-  if (v === 0) return baseStyleForConfig(config);
-
-  if (config.kind === "herringbone") {
-    const size = v === 1 ? "44px 44px" : "60px 60px";
-    return {
-      ...herringboneStyle(config.base, config.mid, config.dark),
-      backgroundSize: size,
-      filter: v === 2 ? "brightness(0.94) saturate(0.95)" : "brightness(1.03)",
-    };
+  switch (role) {
+    case "installed":
+      return installedOverlay(base, config);
+    case "texture":
+      return base;
+    case "detail":
+      return detailZoom(base, config);
+    default:
+      return base;
   }
-
-  if (config.kind === "stone") {
-    return {
-      ...stoneStyle(config.base, config.mid, config.dark),
-      filter: v === 1 ? "contrast(1.12) brightness(1.02)" : "brightness(0.93) saturate(0.9)",
-      backgroundSize: v === 1 ? "120% 120%" : "100% 100%",
-    };
-  }
-
-  if (config.kind === "concrete") {
-    return {
-      ...concreteStyle(config.base, config.mid, config.dark),
-      filter: v === 1 ? "contrast(1.1)" : "brightness(0.92)",
-    };
-  }
-
-  const plankWidths = [78, 52, 86];
-  const angles = [0, 1, -2];
-  if (config.kind === "grey") {
-    return greyPlankStyle(config.base, config.mid, "rgba(255,255,255,0.1)", plankWidths[v]);
-  }
-  return woodPlankStyle(config.base, config.mid, config.dark, plankWidths[v], angles[v]);
 }
 
 export function getPatternLabel(category: VinylFloorCategory): string {
   return PATTERN_CONFIG[category]?.description ?? "Textura vinílica";
 }
 
-export function getVariantLabel(variant: number): string {
-  return FLOOR_VARIANT_LABELS[variant % 3] ?? FLOOR_VARIANT_LABELS[0];
+export function getRoleLabel(role: FloorGalleryRole): string {
+  const labels: Record<FloorGalleryRole, string> = {
+    installed: "Suelo instalado",
+    texture: "Textura del suelo",
+    detail: "Detalle de lama",
+  };
+  return labels[role];
 }

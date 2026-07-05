@@ -7,6 +7,7 @@ import { COLLECTION_LABELS } from "@/types/product";
 import { buildWhatsAppUrl } from "@/lib/constants";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
+import { isValidFloorImage } from "@/data/floor-images";
 import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
 import FavoriteButton from "./FavoriteButton";
 import CompareToggle from "./CompareToggle";
@@ -37,11 +38,14 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           alt={product.nombre}
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-0"
         />
-        <VinylFloorPattern
-          src={product.imagenHover}
-          alt=""
-          className="object-cover opacity-0 transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-100"
-        />
+        {isValidFloorImage(product.imagenHover) &&
+          product.imagenHover !== product.imagen && (
+          <VinylFloorPattern
+            src={product.imagenHover}
+            alt=""
+            className="object-cover opacity-0 transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-100"
+          />
+        )}
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
 
