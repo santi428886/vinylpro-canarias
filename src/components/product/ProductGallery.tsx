@@ -3,33 +3,32 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
-import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import FloorImage from "@/components/ui/FloorImage";
 import {
-  GALLERY_ROLES,
-  getRoleLabel,
-  type FloorGalleryRole,
-  type VinylFloorCategory,
-} from "@/data/floor-patterns";
+  GALLERY_SHOTS,
+  GALLERY_LABELS,
+  type FloorGalleryShot,
+} from "@/data/floor-gallery";
 
 type ProductGalleryProps = {
-  category: VinylFloorCategory;
+  slug: string;
   alt: string;
 };
 
-export default function ProductGallery({ category, alt }: ProductGalleryProps) {
+export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
 
-  const roles: FloorGalleryRole[] = GALLERY_ROLES;
-  const activeRole = roles[active] ?? "installed";
+  const shots: FloorGalleryShot[] = [...GALLERY_SHOTS];
+  const activeShot = shots[active] ?? "portada";
 
   const goNext = useCallback(() => {
-    setActive((i) => (i + 1) % roles.length);
-  }, [roles.length]);
+    setActive((i) => (i + 1) % shots.length);
+  }, [shots.length]);
 
   const goPrev = useCallback(() => {
-    setActive((i) => (i - 1 + roles.length) % roles.length);
-  }, [roles.length]);
+    setActive((i) => (i - 1 + shots.length) % shots.length);
+  }, [shots.length]);
 
   return (
     <>
@@ -42,24 +41,27 @@ export default function ProductGallery({ category, alt }: ProductGalleryProps) {
           >
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeRole}
+                key={activeShot}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4 }}
                 className="absolute inset-0"
               >
-                <VinylFloorPattern
-                  category={category}
-                  role={activeRole}
-                  alt={`${alt} — ${getRoleLabel(activeRole)}`}
-                  className="object-cover transition duration-700 group-hover:scale-[1.02]"
+                <FloorImage
+                  slug={slug}
+                  shot={activeShot}
+                  alt={`${alt} — ${GALLERY_LABELS[activeShot]}`}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  priority={active === 0}
+                  className="transition duration-700 group-hover:scale-[1.02]"
                 />
               </motion.div>
             </AnimatePresence>
 
             <span className="absolute left-5 top-5 rounded-full bg-black/50 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-md">
-              {getRoleLabel(activeRole)}
+              {GALLERY_LABELS[activeShot]}
             </span>
 
             <span className="absolute bottom-5 right-5 flex items-center gap-2 rounded-full bg-black/50 px-4 py-2 text-xs font-medium text-white opacity-0 backdrop-blur-md transition group-hover:opacity-100">
@@ -67,7 +69,7 @@ export default function ProductGallery({ category, alt }: ProductGalleryProps) {
               Ampliar
             </span>
 
-            {roles.length > 1 && (
+            {shots.length > 1 && (
               <>
                 <button
                   type="button"
@@ -96,11 +98,11 @@ export default function ProductGallery({ category, alt }: ProductGalleryProps) {
           </button>
         </div>
 
-        {roles.length > 1 && (
+        {shots.length > 1 && (
           <div className="flex gap-3 overflow-x-auto pb-1">
-            {roles.map((role, i) => (
+            {shots.map((shot, i) => (
               <button
-                key={role}
+                key={shot}
                 type="button"
                 onClick={() => setActive(i)}
                 className={`relative shrink-0 overflow-hidden rounded-xl transition ${
@@ -110,14 +112,16 @@ export default function ProductGallery({ category, alt }: ProductGalleryProps) {
                 }`}
               >
                 <div className="relative h-20 w-20">
-                  <VinylFloorPattern
-                    category={category}
-                    role={role}
-                    alt={getRoleLabel(role)}
+                  <FloorImage
+                    slug={slug}
+                    shot={shot}
+                    alt={GALLERY_LABELS[shot]}
+                    fill
+                    sizes="80px"
                   />
                 </div>
                 <span className="mt-1 block max-w-20 truncate text-center text-[10px] text-muted">
-                  {getRoleLabel(role).split(" ")[0]}
+                  {GALLERY_LABELS[shot].split(" ")[0]}
                 </span>
               </button>
             ))}
@@ -136,7 +140,9 @@ export default function ProductGallery({ category, alt }: ProductGalleryProps) {
             <div className="flex items-center justify-between px-5 py-4">
               <div>
                 <p className="text-sm font-medium text-white">{alt}</p>
-                <p className="text-xs text-white/60">{getRoleLabel(activeRole)}</p>
+                <p className="text-xs text-white/60">
+                  {GALLERY_LABELS[activeShot]}
+                </p>
               </div>
               <button
                 type="button"
@@ -148,24 +154,26 @@ export default function ProductGallery({ category, alt }: ProductGalleryProps) {
               </button>
             </div>
             <div className="relative flex-1">
-              <VinylFloorPattern
-                category={category}
-                role={activeRole}
-                alt={`${alt} — ${getRoleLabel(activeRole)}`}
+              <FloorImage
+                slug={slug}
+                shot={activeShot}
+                alt={`${alt} — ${GALLERY_LABELS[activeShot]}`}
+                fill
+                sizes="100vw"
                 className="object-contain p-4"
               />
             </div>
-            {roles.length > 1 && (
+            {shots.length > 1 && (
               <div className="flex justify-center gap-2 px-5 py-6">
-                {roles.map((role, i) => (
+                {shots.map((shot, i) => (
                   <button
-                    key={`zoom-${role}`}
+                    key={`zoom-${shot}`}
                     type="button"
                     onClick={() => setActive(i)}
                     className={`h-2 w-2 rounded-full transition ${
                       active === i ? "bg-white" : "bg-white/30"
                     }`}
-                    aria-label={getRoleLabel(role)}
+                    aria-label={GALLERY_LABELS[shot]}
                   />
                 ))}
               </div>

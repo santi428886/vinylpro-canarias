@@ -1,6 +1,7 @@
 "use client";
 
-import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import Image from "next/image";
+import { textureImagePath } from "@/data/floor-gallery";
 import {
   COLOR_SWATCHES,
   categoriesForVisualColor,
@@ -55,10 +56,12 @@ export default function ColorSelector({ activeColor, onSelect }: ColorSelectorPr
                     : "ring-1 ring-border group-hover:scale-105 group-hover:shadow-md"
                 }`}
               >
-                <VinylFloorPattern
-                  category={swatch.preview}
-                  role="texture"
+                <Image
+                  src={textureImagePath(swatch.previewTexture)}
                   alt={swatch.label}
+                  fill
+                  sizes="96px"
+                  className="object-cover"
                 />
               </span>
               <span

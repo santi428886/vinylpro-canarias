@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { primaryFloorImage } from "@/data/floor-gallery";
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://vinylpro-canarias.es";
@@ -104,7 +105,7 @@ export function productJsonLd(product: {
     "@type": "Product",
     name: product.nombre,
     description: product.descripcion,
-    image: "/og-image.jpg",
+    image: `${SITE_URL}${primaryFloorImage(product.slug)}`,
     url: `${SITE_URL}/modelo/${product.slug}`,
     offers: {
       "@type": "Offer",

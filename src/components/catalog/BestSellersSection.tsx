@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { getBestSellerProducts } from "@/lib/products";
 import { BEST_SELLER_ITEMS } from "@/data/catalog-visual";
-import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import FloorImage from "@/components/ui/FloorImage";
 import { formatEuro } from "@/lib/calculator";
 
 export default function BestSellersSection() {
@@ -24,7 +24,7 @@ export default function BestSellersSection() {
         Suelos más <span className="text-accent">vendidos</span>
       </h2>
       <p className="mt-2 text-sm text-muted sm:text-base">
-        Muestras de textura vinílica — los favoritos de nuestros clientes en Gran Canaria.
+        Fotografías reales de nuestros acabados más solicitados en Gran Canaria.
       </p>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -35,14 +35,16 @@ export default function BestSellersSection() {
             className="group overflow-hidden rounded-2xl bg-white ring-1 ring-border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-border/80"
           >
             <div className="relative aspect-square overflow-hidden bg-surface">
-              <VinylFloorPattern
-                category={product.patternCategory}
-                role="texture"
+              <FloorImage
+                slug={product.slug}
+                shot="portada"
                 alt={labelBySlug[product.slug] ?? product.nombre}
+                fill
+                sizes="(max-width: 640px) 100vw, 33vw"
                 className="transition-transform duration-700 group-hover:scale-[1.04]"
               />
               <div className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-foreground shadow-sm">
-                Muestra
+                Más vendido
               </div>
             </div>
             <div className="border-t border-border p-5">

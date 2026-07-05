@@ -7,7 +7,7 @@ import { useCatalogExperience } from "@/context/CatalogExperienceContext";
 import { getProductsBySlugs } from "@/lib/products";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
-import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import FloorImage from "@/components/ui/FloorImage";
 import StarRating from "./StarRating";
 
 export default function CompareBar() {
@@ -80,11 +80,12 @@ export default function CompareBar() {
                       className="overflow-hidden rounded-2xl border border-border"
                     >
                       <div className="relative aspect-[4/3] bg-surface">
-                        <VinylFloorPattern
-                          category={p.patternCategory}
-                          role="installed"
+                        <FloorImage
+                          slug={p.slug}
+                          shot="salon"
                           alt={p.nombre}
-                          className="object-cover"
+                          fill
+                          sizes="300px"
                         />
                       </div>
                       <div className="p-5">

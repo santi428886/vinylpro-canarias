@@ -5,6 +5,7 @@ import {
   getSimilarProducts,
 } from "@/lib/products";
 import { createMetadata, productJsonLd, SITE_NAME } from "@/lib/seo";
+import { primaryFloorImage } from "@/data/floor-gallery";
 import { formatEuro } from "@/lib/calculator";
 import ProductDetailView from "@/components/product/ProductDetailView";
 import PriceCalculator from "@/components/product/PriceCalculator";
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props) {
     title: `${product.nombre} | ${SITE_NAME}`,
     description: `${product.descripcion} Desde ${formatEuro(product.precio)}/m² instalado en Gran Canaria.`,
     path: `/modelo/${slug}`,
-    image: "/og-image.jpg",
+    image: primaryFloorImage(slug),
   });
 }
 

@@ -1,22 +1,33 @@
 import type { FloorProduct } from "@/data/catalog";
-import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import FloorImage from "@/components/ui/FloorImage";
 import { buildWhatsAppUrl } from "@/lib/constants";
+
+const LEGACY_SLUG_MAP: Record<string, string> = {
+  "roble-natural": "roble-natural-claro",
+  "roble-gris": "roble-gris-nordico-plata",
+  "nogal": "espiga-milan-nogal",
+  "piedra": "piedra-caliza-marfil",
+  "espiga": "espiga-heritage-natural",
+};
 
 type ProductCardProps = {
   product: FloorProduct;
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const slug = LEGACY_SLUG_MAP[product.id] ?? product.id;
   const whatsappMessage = `Hola VinylPro Canarias, me interesa el modelo "${product.name}" (${product.price.toFixed(2).replace(".", ",")} €/m² instalado). ¿Podéis enviarme presupuesto?`;
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative aspect-[4/3] overflow-hidden">
-        <VinylFloorPattern
-          category={product.patternCategory}
-          role="installed"
+        <FloorImage
+          slug={slug}
+          shot="portada"
           alt={product.name}
-          className="object-cover transition duration-500 group-hover:scale-105"
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="transition duration-500 group-hover:scale-105"
         />
         <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-accent backdrop-blur-sm">
           {product.type}

@@ -1,7 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { allProducts, filterProducts } from "@/lib/products";
 import type { FloorSystem, ProductFilters } from "@/types/product";
 import type { RoomId, VisualColorId } from "@/data/catalog-visual";
@@ -15,22 +14,20 @@ import BestSellersSection from "./BestSellersSection";
 const VALID_SISTEMAS: FloorSystem[] = ["spc-click", "adhesivo", "rollo"];
 
 function isValidSistema(value: string | null): value is FloorSystem {
-  return VALID_SISTEMAS.includes(value as FloorSystem);
+  return value !== null && VALID_SISTEMAS.includes(value as FloorSystem);
 }
 
-function CatalogContent() {
-  const searchParams = useSearchParams();
-  const sistemaParam = searchParams.get("sistema");
-
+export default function CatalogPageContent() {
   const [filters, setFilters] = useState<ProductFilters>({
     sort: "popularidad",
   });
 
   useEffect(() => {
-    if (isValidSistema(sistemaParam)) {
-      setFilters((prev) => ({ ...prev, sistema: [sistemaParam] }));
+    const sistema = new URLSearchParams(window.location.search).get("sistema");
+    if (isValidSistema(sistema)) {
+      setFilters((prev) => ({ ...prev, sistema: [sistema] }));
     }
-  }, [sistemaParam]);
+  }, []);
 
   const filtered = useMemo(
     () => filterProducts(allProducts, filters),
@@ -59,7 +56,7 @@ function CatalogContent() {
   );
 
   const handleColorSelect = useCallback(
-    (partial: Partial<ProductFilters>, color: VisualColorId | null) => {
+    (partial: Partial<ProductFilters>, _color: VisualColorId | null) => {
       applyVisualFilters(partial);
     },
     [applyVisualFilters],
@@ -81,7 +78,7 @@ function CatalogContent() {
 
       <div
         id="catalog-grid"
-        className="mx-auto max-w-7xl scroll-mt-28 px-5 pb-8 sm:px-8 lg:px-12"
+        className="mx-auto max-w-7xl scroll-mt-28 px-5 pb-16 sm:px-8 lg:px-12"
       >
         <h2 className="mb-8 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
           Catálogo completo
@@ -114,21 +111,8 @@ function CatalogContent() {
           </div>
         </div>
       </div>
+
       <CompareBar />
     </>
-  );
-}
-
-export default function CatalogPageContent() {
-  return (
-    <Suspense
-      fallback={
-        <div className="mx-auto max-w-7xl px-5 py-20 text-center text-muted sm:px-8">
-          Cargando catálogo…
-        </div>
-      }
-    >
-      <CatalogContent />
-    </Suspense>
   );
 }

@@ -1,6 +1,14 @@
 import type { UsageType } from "@/types/product";
 import type { VinylFloorCategory } from "@/data/floor-patterns";
 
+export type TextureFamily =
+  | "roble"
+  | "nogal"
+  | "gris"
+  | "cemento"
+  | "piedra"
+  | "espiga";
+
 /** Colores visuales estilo Quick-Step */
 export type VisualColorId =
   | "natural"
@@ -20,12 +28,6 @@ export type RoomOption = {
   label: string;
   subtitle: string;
   uso: UsageType;
-  /** Patrón CSS del suelo protagonista */
-  pattern: VinylFloorCategory;
-  /** Tono de pared sugerido (CSS, no foto) */
-  wallTone: string;
-  /** Acento decorativo sutil */
-  accentTone: string;
 };
 
 export const ROOM_OPTIONS: RoomOption[] = [
@@ -34,43 +36,31 @@ export const ROOM_OPTIONS: RoomOption[] = [
     label: "Salón",
     subtitle: "Suelos para el salón",
     uso: "vivienda",
-    pattern: "roble-medio",
-    wallTone: "#f3ede4",
-    accentTone: "#d4c4a8",
   },
   {
     id: "cocina",
     label: "Cocina",
     subtitle: "Suelos para la cocina",
     uso: "cocina",
-    pattern: "gris-claro",
-    wallTone: "#f7f7f5",
-    accentTone: "#c8ccc9",
   },
   {
     id: "dormitorio",
     label: "Dormitorio",
     subtitle: "Suelos para el dormitorio",
     uso: "vivienda",
-    pattern: "roble-claro",
-    wallTone: "#faf8f5",
-    accentTone: "#e8dfd0",
   },
   {
     id: "bano",
     label: "Baño",
     subtitle: "Suelos para el baño",
     uso: "bano",
-    pattern: "piedra-beige",
-    wallTone: "#eef2f4",
-    accentTone: "#d5dde2",
   },
 ];
 
 export type ColorSwatch = {
   id: VisualColorId;
   label: string;
-  preview: VinylFloorCategory;
+  previewTexture: TextureFamily;
   categories: VinylFloorCategory[];
 };
 
@@ -78,55 +68,55 @@ export const COLOR_SWATCHES: ColorSwatch[] = [
   {
     id: "natural",
     label: "Natural",
-    preview: "roble-medio",
+    previewTexture: "roble",
     categories: ["roble-medio", "roble-claro"],
   },
   {
     id: "beige",
     label: "Beige",
-    preview: "roble-claro",
+    previewTexture: "piedra",
     categories: ["roble-claro", "piedra-beige", "blanco-nordico"],
   },
   {
     id: "marron-oscuro",
     label: "Marrón oscuro",
-    preview: "roble-oscuro",
+    previewTexture: "nogal",
     categories: ["roble-oscuro", "nogal"],
   },
   {
     id: "gris-claro",
     label: "Gris claro",
-    preview: "gris-claro",
+    previewTexture: "gris",
     categories: ["gris-claro", "blanco-nordico"],
   },
   {
     id: "gris-oscuro",
     label: "Gris oscuro",
-    preview: "gris-oscuro",
+    previewTexture: "cemento",
     categories: ["gris-oscuro", "hormigon-oscuro"],
   },
   {
     id: "negro",
     label: "Negro",
-    preview: "negro-premium",
+    previewTexture: "nogal",
     categories: ["negro-premium"],
   },
   {
     id: "blanco",
     label: "Blanco",
-    preview: "blanco-nordico",
+    previewTexture: "cemento",
     categories: ["blanco-nordico", "gris-claro"],
   },
   {
     id: "roble",
     label: "Roble",
-    preview: "roble-medio",
+    previewTexture: "roble",
     categories: ["roble-claro", "roble-medio", "roble-oscuro"],
   },
   {
     id: "nogal",
     label: "Nogal",
-    preview: "nogal",
+    previewTexture: "nogal",
     categories: ["nogal", "espiga-oscura"],
   },
 ];
@@ -143,8 +133,4 @@ export const BEST_SELLER_ITEMS: { slug: string; label: string }[] = [
 
 export function categoriesForVisualColor(id: VisualColorId): VinylFloorCategory[] {
   return COLOR_SWATCHES.find((s) => s.id === id)?.categories ?? [];
-}
-
-export function previewForVisualColor(id: VisualColorId): VinylFloorCategory {
-  return COLOR_SWATCHES.find((s) => s.id === id)?.preview ?? "roble-claro";
 }

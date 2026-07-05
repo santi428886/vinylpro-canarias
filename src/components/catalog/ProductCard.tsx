@@ -7,7 +7,7 @@ import { COLLECTION_LABELS } from "@/types/product";
 import { buildWhatsAppUrl } from "@/lib/constants";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
-import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import FloorImage from "@/components/ui/FloorImage";
 import FavoriteButton from "./FavoriteButton";
 import CompareToggle from "./CompareToggle";
 import ProductBadgeTag from "./ProductBadgeTag";
@@ -33,26 +33,28 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         className="relative flex-[7] min-h-0 overflow-hidden bg-neutral-100"
       >
         <div className="absolute inset-3 overflow-hidden rounded-xl ring-1 ring-black/[0.08] sm:inset-4">
-          <VinylFloorPattern
-            category={product.patternCategory}
-            role="texture"
+          <FloorImage
+            slug={product.slug}
+            shot="portada"
             alt={product.nombre}
+            fill
+            sizes="(max-width: 1024px) 100vw, 40vw"
             className="transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:opacity-0"
           />
-          <VinylFloorPattern
-            category={product.patternCategory}
-            role="installed"
-            alt=""
+          <FloorImage
+            slug={product.slug}
+            shot="salon"
+            alt={`${product.nombre} en salón`}
+            fill
+            sizes="(max-width: 1024px) 100vw, 40vw"
             className="opacity-0 transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:opacity-100"
           />
         </div>
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
-
         <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
           {product.badge && <ProductBadgeTag badge={product.badge} />}
           <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-medium text-foreground shadow-sm backdrop-blur-sm">
-            Muestra vinílica
+            Foto real
           </span>
         </div>
 

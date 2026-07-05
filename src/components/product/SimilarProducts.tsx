@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Product } from "@/types/product";
 import { formatEuro } from "@/lib/calculator";
-import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
+import FloorImage from "@/components/ui/FloorImage";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 
@@ -31,11 +31,13 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
                 className="group block overflow-hidden rounded-2xl bg-white transition hover:shadow-lg"
               >
                 <div className="relative aspect-square overflow-hidden bg-surface">
-                  <VinylFloorPattern
-                    category={product.patternCategory}
-                    role="installed"
+                  <FloorImage
+                    slug={product.slug}
+                    shot="portada"
                     alt={product.nombre}
-                    className="object-cover transition duration-500 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 1024px) 50vw, 25vw"
+                    className="transition duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div className="p-4">
