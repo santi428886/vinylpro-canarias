@@ -44,7 +44,28 @@ export function formatEstimatedTotal(value: number): string {
   });
 }
 
-export function buildFloorEstimateWhatsAppMessage(metros: number): string {
-  const formatted = formatSquareMeters(metros);
-  return `Hola, quiero un presupuesto para instalar aproximadamente ${formatted} m² de suelo vinílico.`;
+export function getEstimatedInstallTime(metros: number): string {
+  if (metros <= 30) return "1 día";
+  if (metros <= 70) return "2 días";
+  return "3-4 días";
+}
+
+export function buildFloorEstimateWhatsAppMessage(
+  metros: number,
+  total: number,
+  zone?: string,
+): string {
+  const formattedMetros = formatSquareMeters(metros);
+  const formattedTotal = formatEstimatedTotal(total);
+  const time = getEstimatedInstallTime(metros);
+  const zoneLine = zone?.trim()
+    ? `\nZona: ${zone.trim()}`
+    : "";
+
+  return (
+    `Hola, quiero un presupuesto para instalar suelo vinílico.\n` +
+    `Superficie: ${formattedMetros} m²\n` +
+    `Total estimado: ${formattedTotal}\n` +
+    `Tiempo orientativo: ${time}${zoneLine}`
+  );
 }
