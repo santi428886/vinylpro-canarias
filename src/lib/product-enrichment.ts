@@ -103,18 +103,15 @@ export function enrichProduct(
     | "precioMaterial"
   >,
 ): Product {
-  const images = resolveProductImages(
-    p.slug,
-    {
-      tipo: p.tipo,
-      color: p.color,
-      sistema: p.sistema,
-      nombre: p.nombre,
-      acabado: p.acabado,
-      coleccion: p.coleccion,
-    },
-    [p.imagen, ...p.imagenes],
-  );
+  const images = resolveProductImages(p.slug, {
+    tipo: p.tipo,
+    color: p.color,
+    sistema: p.sistema,
+    nombre: p.nombre,
+    acabado: p.acabado,
+    coleccion: p.coleccion,
+    temaColeccion: resolveTemaColeccion(p),
+  });
 
   const base = {
     ...p,

@@ -4,7 +4,11 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import FloorImage from "@/components/ui/FloorImage";
-import { DEFAULT_FLOOR_FALLBACK, sanitizeFloorUrl } from "@/data/floor-images";
+import {
+  DEFAULT_FLOOR_FALLBACK,
+  FLOOR_GALLERY_LABELS,
+  sanitizeFloorPath,
+} from "@/data/floor-images";
 
 type ProductGalleryProps = {
   images: string[];
@@ -14,11 +18,13 @@ type ProductGalleryProps = {
 export default function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
-  const gallery = images.length > 0 ? images.map(sanitizeFloorUrl) : [DEFAULT_FLOOR_FALLBACK];
-  const [failed, setFailed] = useState<Set<number>>(new Set());
+  const gallery =
+    images.length > 0 ? images.map(sanitizeFloorPath) : [DEFAULT_FLOOR_FALLBACK];
 
-  const getSrc = (i: number) =>
-    failed.has(i) ? DEFAULT_FLOOR_FALLBACK : gallery[i];
+  const getSrc = (i: number) => gallery[i] ?? DEFAULT_FLOOR_FALLBACK;
+
+  const getLabel = (i: number) =>
+    FLOOR_GALLERY_LABELS[i] ?? FLOOR_GALLERY_LABELS[0];
 
   const goNext = useCallback(() => {
     setActive((i) => (i + 1) % gallery.length);
@@ -48,13 +54,17 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
               >
                 <FloorImage
                   src={getSrc(active)}
-                  alt={alt}
+                  alt={`${alt} — ${getLabel(active)}`}
                   priority
                   className="object-cover transition duration-700 group-hover:scale-[1.02]"
                   sizes="(max-width: 1024px) 100vw, 55vw"
                 />
               </motion.div>
             </AnimatePresence>
+
+            <span className="absolute left-5 top-5 rounded-full bg-black/50 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-md">
+              {getLabel(active)}
+            </span>
 
             <span className="absolute bottom-5 right-5 flex items-center gap-2 rounded-full bg-black/50 px-4 py-2 text-xs font-medium text-white opacity-0 backdrop-blur-md transition group-hover:opacity-100">
               <Expand className="h-3.5 w-3.5" />
@@ -97,13 +107,18 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
                 key={`${img}-${i}`}
                 type="button"
                 onClick={() => setActive(i)}
-                className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-xl transition ${
+                className={`relative shrink-0 overflow-hidden rounded-xl transition ${
                   active === i
                     ? "ring-2 ring-accent ring-offset-2"
-                    : "opacity-50 hover:opacity-100"
+                    : "opacity-60 hover:opacity-100"
                 }`}
               >
-                <FloorImage src={getSrc(i)} alt="" sizes="80px" />
+                <div className="relative h-20 w-20">
+                  <FloorImage src={getSrc(i)} alt={getLabel(i)} sizes="80px" />
+                </div>
+                <span className="mt-1 block max-w-20 truncate text-center text-[10px] text-muted">
+                  {getLabel(i).split(" ")[0]}
+                </span>
               </button>
             ))}
           </div>
@@ -119,7 +134,10 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
             className="fixed inset-0 z-[70] flex flex-col bg-black"
           >
             <div className="flex items-center justify-between px-5 py-4">
-              <p className="text-sm font-medium text-white/70">{alt}</p>
+              <div>
+                <p className="text-sm font-medium text-white">{alt}</p>
+                <p className="text-xs text-white/60">{getLabel(active)}</p>
+              </div>
               <button
                 type="button"
                 aria-label="Cerrar"
@@ -132,7 +150,7 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
             <div className="relative flex-1">
               <FloorImage
                 src={getSrc(active)}
-                alt={alt}
+                alt={`${alt} — ${getLabel(active)}`}
                 className="object-contain p-4"
                 sizes="100vw"
               />
@@ -147,6 +165,7 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
                     className={`h-2 w-2 rounded-full transition ${
                       active === i ? "bg-white" : "bg-white/30"
                     }`}
+                    aria-label={getLabel(i)}
                   />
                 ))}
               </div>

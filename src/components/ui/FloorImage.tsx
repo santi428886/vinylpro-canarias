@@ -1,8 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { DEFAULT_FLOOR_FALLBACK, sanitizeFloorUrl } from "@/data/floor-images";
+import { useCallback, useState } from "react";
+import {
+  DEFAULT_FLOOR_FALLBACK,
+  getFallbackChain,
+  sanitizeFloorPath,
+} from "@/data/floor-images";
 
 type FloorImageProps = {
   src: string;
@@ -27,7 +31,20 @@ export default function FloorImage({
   width,
   height,
 }: FloorImageProps) {
-  const [currentSrc, setCurrentSrc] = useState(sanitizeFloorUrl(src));
+  const initial = sanitizeFloorPath(src);
+  const [currentSrc, setCurrentSrc] = useState(initial);
+  const [fallbackIndex, setFallbackIndex] = useState(0);
+
+  const handleError = useCallback(() => {
+    const chain = getFallbackChain(initial);
+    const nextIndex = fallbackIndex + 1;
+    if (nextIndex < chain.length) {
+      setFallbackIndex(nextIndex);
+      setCurrentSrc(chain[nextIndex]);
+    } else {
+      setCurrentSrc(DEFAULT_FLOOR_FALLBACK);
+    }
+  }, [initial, fallbackIndex]);
 
   return (
     <Image
@@ -40,11 +57,7 @@ export default function FloorImage({
       loading={loading ?? (priority ? undefined : "lazy")}
       className={className}
       sizes={sizes}
-      onError={() => {
-        if (currentSrc !== DEFAULT_FLOOR_FALLBACK) {
-          setCurrentSrc(DEFAULT_FLOOR_FALLBACK);
-        }
-      }}
+      onError={handleError}
     />
   );
 }

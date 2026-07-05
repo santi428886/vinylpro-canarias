@@ -26,22 +26,22 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-border/60 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/[0.08] hover:ring-border"
+      className="group relative flex min-h-[480px] flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-border/60 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/[0.08] hover:ring-border sm:min-h-[540px]"
     >
       <Link
         href={`/modelo/${product.slug}`}
-        className="relative block aspect-[4/5] min-h-[320px] overflow-hidden bg-surface sm:min-h-[380px]"
+        className="relative flex-[7] min-h-0 overflow-hidden bg-surface"
       >
         <FloorImage
           src={product.imagen}
           alt={product.nombre}
-          className="object-cover transition duration-700 group-hover:scale-[1.04] group-hover:opacity-0"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-0"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
         <FloorImage
           src={product.imagenHover}
           alt=""
-          className="object-cover opacity-0 transition duration-700 group-hover:scale-[1.04] group-hover:opacity-100"
+          className="object-cover opacity-0 transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-100"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
 
@@ -60,7 +60,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col p-6 sm:p-8">
+      <div className="flex flex-[3] flex-col p-5 sm:p-6">
         <div className="flex flex-wrap gap-2">
           <span className="rounded-full bg-surface px-3 py-1 text-xs text-muted">
             {getSistemaLabel(product.sistema)}
