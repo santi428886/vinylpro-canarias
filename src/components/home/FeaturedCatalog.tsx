@@ -29,7 +29,8 @@ export default function FeaturedCatalog() {
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <VinylFloorPattern
-                    src={product.imagen}
+                    category={product.patternCategory}
+                    role="installed"
                     alt={product.nombre}
                     className="object-cover transition duration-700 group-hover:scale-105"
                   />

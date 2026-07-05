@@ -69,13 +69,38 @@ function expandSeeds(seeds: ProductSeed[]): Product[] {
   return products;
 }
 
+function productCore(
+  p: Product,
+): Omit<
+  Product,
+  | "badge"
+  | "ratings"
+  | "nivelUso"
+  | "habitaciones"
+  | "temaColeccion"
+  | "patternCategory"
+  | "precioMaterial"
+> {
+  const {
+    badge: _badge,
+    ratings: _ratings,
+    nivelUso: _nivelUso,
+    habitaciones: _habitaciones,
+    temaColeccion: _tema,
+    patternCategory: _pattern,
+    precioMaterial: _material,
+    ...core
+  } = p;
+  return core;
+}
+
 function expandVariants(products: Product[]): Product[] {
   const extended = [...products];
 
   for (const p of products) {
     extended.push(
       enrichProduct({
-        ...p,
+        ...productCore(p),
         id: `${p.id}-xl`,
         slug: `${p.slug}-xl`,
         nombre: `${p.nombre} XL`,
@@ -90,7 +115,7 @@ function expandVariants(products: Product[]): Product[] {
 
     extended.push(
       enrichProduct({
-        ...p,
+        ...productCore(p),
         id: `${p.id}-compact`,
         slug: `${p.slug}-compact`,
         nombre: `${p.nombre} Compact`,

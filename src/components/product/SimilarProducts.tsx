@@ -32,7 +32,8 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
               >
                 <div className="relative aspect-square overflow-hidden bg-surface">
                   <VinylFloorPattern
-                    src={product.imagen}
+                    category={product.patternCategory}
+                    role="installed"
                     alt={product.nombre}
                     className="object-cover transition duration-500 group-hover:scale-105"
                   />

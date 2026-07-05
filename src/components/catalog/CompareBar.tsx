@@ -81,7 +81,8 @@ export default function CompareBar() {
                     >
                       <div className="relative aspect-[4/3] bg-surface">
                         <VinylFloorPattern
-                          src={p.imagen}
+                          category={p.patternCategory}
+                          role="installed"
                           alt={p.nombre}
                           className="object-cover"
                         />

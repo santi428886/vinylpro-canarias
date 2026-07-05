@@ -7,7 +7,7 @@ import type {
   PriceRange,
 } from "@/types/product";
 import { INSTALLATION_COST_M2 } from "@/types/product";
-import { resolveProductImages } from "@/data/floor-images";
+import { resolvePatternCategory } from "@/data/floor-patterns";
 
 function hashSlug(slug: string): number {
   let h = 0;
@@ -99,29 +99,26 @@ export function enrichProduct(
     | "nivelUso"
     | "habitaciones"
     | "temaColeccion"
-    | "imagen"
-    | "imagenHover"
-    | "imagenes"
+    | "patternCategory"
     | "precioMaterial"
   >,
 ): Product {
-  const images = resolveProductImages(p.slug, {
+  const temaColeccion = resolveTemaColeccion(p);
+  const patternCategory = resolvePatternCategory({
     tipo: p.tipo,
     color: p.color,
     sistema: p.sistema,
     nombre: p.nombre,
     acabado: p.acabado,
     coleccion: p.coleccion,
-    temaColeccion: resolveTemaColeccion(p),
+    temaColeccion,
   });
 
   const base = {
     ...p,
-    imagen: images.imagen,
-    imagenHover: images.imagenHover,
-    imagenes: images.imagenes,
+    patternCategory,
     precioMaterial: Math.max(p.precio - INSTALLATION_COST_M2, 12),
-    temaColeccion: resolveTemaColeccion(p),
+    temaColeccion,
     badge: null as ProductBadge | null,
     ratings: { resistencia: 0, agua: 0, mascotas: 0, ninos: 0, oficinas: 0, calefaccion: 0 },
     nivelUso: "",

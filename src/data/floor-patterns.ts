@@ -1,13 +1,141 @@
 import type { CSSProperties } from "react";
-import type { FloorGalleryRole, VinylFloorCategory } from "@/data/floor-images";
+import type {
+  CollectionTheme,
+  ColorTone,
+  FloorSystem,
+  FloorType,
+} from "@/types/product";
 
 /**
- * Estilos CSS por categoría y rol de galería.
+ * Patrones CSS del catálogo — cero URLs externas.
  *
- * installed → lamas amplias + sombreado de suelo instalado
- * texture   → primer plano de lamas vinílicas
- * detail    → zoom de veta / patrón
+ * Roles de galería (máx. 3):
+ *   installed → suelo instalado (principal)
+ *   texture   → textura de lamas
+ *   detail    → detalle de veta / patrón
  */
+
+export type VinylFloorCategory =
+  | "roble-claro"
+  | "roble-medio"
+  | "roble-oscuro"
+  | "nogal"
+  | "gris-claro"
+  | "gris-oscuro"
+  | "espiga-clara"
+  | "espiga-oscura"
+  | "hormigon-claro"
+  | "hormigon-oscuro"
+  | "piedra-beige"
+  | "piedra-gris"
+  | "blanco-nordico"
+  | "negro-premium";
+
+export type FloorGalleryRole = "installed" | "texture" | "detail";
+
+export const GALLERY_ROLES: FloorGalleryRole[] = [
+  "installed",
+  "texture",
+  "detail",
+];
+
+export const DEFAULT_PATTERN_CATEGORY: VinylFloorCategory = "roble-claro";
+
+export function resolvePatternCategory(input: {
+  tipo: FloorType;
+  color: ColorTone;
+  sistema: FloorSystem;
+  nombre: string;
+  acabado: string;
+  coleccion: string;
+  temaColeccion?: CollectionTheme;
+}): VinylFloorCategory {
+  const name = input.nombre.toLowerCase();
+  const acabado = input.acabado.toLowerCase();
+  const coleccion = input.coleccion.toLowerCase();
+
+  if (input.tipo === "espiga") {
+    return input.color === "oscuro" ? "espiga-oscura" : "espiga-clara";
+  }
+
+  if (input.tipo === "piedra") {
+    if (
+      name.includes("beige") ||
+      name.includes("caliza") ||
+      name.includes("arena") ||
+      name.includes("marfil") ||
+      name.includes("carrara") ||
+      input.color === "claro"
+    ) {
+      return "piedra-beige";
+    }
+    return "piedra-gris";
+  }
+
+  if (input.tipo === "hormigon") {
+    return input.color === "oscuro" ? "hormigon-oscuro" : "hormigon-claro";
+  }
+
+  if (
+    name.includes("negro") ||
+    name.includes("ébano") ||
+    name.includes("ebano") ||
+    name.includes("wenge")
+  ) {
+    return "negro-premium";
+  }
+
+  if (
+    name.includes("nogal") ||
+    name.includes("walnut") ||
+    name.includes("cacao") ||
+    name.includes("cognac")
+  ) {
+    return "nogal";
+  }
+
+  if (
+    name.includes("blanco") ||
+    name.includes("marfil") ||
+    name.includes("perla") ||
+    acabado.includes("blanco")
+  ) {
+    return "blanco-nordico";
+  }
+
+  if (name.includes("nórdico") || name.includes("nordico")) {
+    return input.color === "oscuro" ? "gris-oscuro" : "blanco-nordico";
+  }
+
+  if (
+    name.includes("gris") ||
+    name.includes("grafito") ||
+    name.includes("plata") ||
+    name.includes("cemento") ||
+    name.includes("antracita") ||
+    coleccion === "industrial"
+  ) {
+    return input.color === "oscuro" ? "gris-oscuro" : "gris-claro";
+  }
+
+  if (input.tipo === "roble") {
+    if (input.color === "claro") return "roble-claro";
+    if (input.color === "medio") return "roble-medio";
+    return "roble-oscuro";
+  }
+
+  if (input.temaColeccion === "nordico") {
+    return input.color === "oscuro" ? "gris-oscuro" : "blanco-nordico";
+  }
+
+  if (input.temaColeccion === "industrial") {
+    return input.color === "oscuro" ? "hormigon-oscuro" : "hormigon-claro";
+  }
+
+  if (input.color === "claro") return "roble-claro";
+  if (input.color === "medio") return "roble-medio";
+  return "roble-oscuro";
+}
 
 type PatternConfig = {
   description: string;

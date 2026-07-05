@@ -4,7 +4,12 @@ export type FloorProduct = {
   description: string;
   type: "PVC click" | "Vinílico";
   price: number;
-  image: string;
+  patternCategory:
+    | "roble-claro"
+    | "roble-medio"
+    | "roble-oscuro"
+    | "gris-claro"
+    | "espiga-clara";
 };
 
 export const floorCatalog: FloorProduct[] = [
@@ -15,8 +20,7 @@ export const floorCatalog: FloorProduct[] = [
       "Tonos cálidos de madera natural. Ideal para salones y dormitorios con acabado cálido y acogedor.",
     type: "PVC click",
     price: 24.9,
-    image:
-      "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=800&q=80",
+    patternCategory: "roble-claro",
   },
   {
     id: "roble-gris",
@@ -25,8 +29,7 @@ export const floorCatalog: FloorProduct[] = [
       "Estilo nórdico y contemporáneo. Perfecto para espacios minimalistas y pisos de alquiler.",
     type: "PVC click",
     price: 25.9,
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
+    patternCategory: "gris-claro",
   },
   {
     id: "madera-oscura",
@@ -35,8 +38,7 @@ export const floorCatalog: FloorProduct[] = [
       "Acabado elegante y sofisticado. Resistente al desgaste diario en zonas de alto tránsito.",
     type: "Vinílico",
     price: 29.9,
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+    patternCategory: "roble-oscuro",
   },
   {
     id: "cemento-gris",
@@ -45,8 +47,7 @@ export const floorCatalog: FloorProduct[] = [
       "Efecto cemento pulido industrial. Muy demandado en cocinas, locales y espacios modernos.",
     type: "Vinílico",
     price: 27.9,
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80",
+    patternCategory: "gris-claro",
   },
   {
     id: "espiga-premium",
@@ -55,8 +56,7 @@ export const floorCatalog: FloorProduct[] = [
       "Patrón espiga clásico con instalación profesional. El más elegante de nuestro catálogo.",
     type: "Vinílico",
     price: 34.9,
-    image:
-      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&q=80",
+    patternCategory: "espiga-clara",
   },
 ];
 

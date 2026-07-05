@@ -1,3 +1,5 @@
+import type { VinylFloorCategory } from "@/data/floor-patterns";
+
 export type ColorTone = "claro" | "medio" | "oscuro";
 
 export type FloorType = "roble" | "espiga" | "piedra" | "hormigon";
@@ -36,9 +38,7 @@ export type Product = {
   nombre: string;
   coleccion: string;
   temaColeccion: CollectionTheme;
-  imagen: string;
-  imagenHover: string;
-  imagenes: string[];
+  patternCategory: VinylFloorCategory;
   precio: number;
   precioMaterial: number;
   grosor: string;
@@ -84,9 +84,7 @@ export type ProductSeed = Omit<
   | "nivelUso"
   | "habitaciones"
   | "temaColeccion"
-  | "imagen"
-  | "imagenHover"
-  | "imagenes"
+  | "patternCategory"
 > & {
   baseName: string;
   baseSlug: string;

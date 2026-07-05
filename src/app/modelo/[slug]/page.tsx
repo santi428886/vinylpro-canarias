@@ -4,7 +4,6 @@ import {
   getProductBySlug,
   getSimilarProducts,
 } from "@/lib/products";
-import { textureTokenToOgImage } from "@/data/floor-images";
 import { createMetadata, productJsonLd, SITE_NAME } from "@/lib/seo";
 import { formatEuro } from "@/lib/calculator";
 import ProductDetailView from "@/components/product/ProductDetailView";
@@ -30,7 +29,7 @@ export async function generateMetadata({ params }: Props) {
     title: `${product.nombre} | ${SITE_NAME}`,
     description: `${product.descripcion} Desde ${formatEuro(product.precio)}/m² instalado en Gran Canaria.`,
     path: `/modelo/${slug}`,
-    image: textureTokenToOgImage(product.imagen),
+    image: "/og-image.jpg",
   });
 }
 

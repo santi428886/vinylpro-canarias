@@ -1,21 +1,16 @@
 "use client";
 
 import {
-  DEFAULT_FLOOR_FALLBACK,
-  parseTextureToken,
-  sanitizeFloorPath,
-  type FloorGalleryRole,
-  type VinylFloorCategory,
-} from "@/data/floor-images";
-import {
+  DEFAULT_PATTERN_CATEGORY,
   getPatternLabel,
   getPatternStyle,
   PATTERN_CONFIG,
+  type FloorGalleryRole,
+  type VinylFloorCategory,
 } from "@/data/floor-patterns";
 import styles from "./VinylFloorPattern.module.css";
 
 type VinylFloorPatternProps = {
-  src?: string;
   category?: VinylFloorCategory;
   role?: FloorGalleryRole;
   alt: string;
@@ -24,29 +19,16 @@ type VinylFloorPatternProps = {
 };
 
 /**
- * Textura CSS de suelo vinílico — sin imágenes externas.
- * Roles: installed · texture · detail
+ * Patrón CSS de suelo vinílico — sin imágenes externas.
  */
 export default function VinylFloorPattern({
-  src,
-  category: categoryProp,
-  role: roleProp = "installed",
+  category = DEFAULT_PATTERN_CATEGORY,
+  role = "installed",
   alt,
   className = "",
   showLabel = false,
 }: VinylFloorPatternProps) {
-  let category = categoryProp;
-  let role = roleProp;
-
-  if (src) {
-    const token = sanitizeFloorPath(src);
-    const parsed = parseTextureToken(token) ?? parseTextureToken(DEFAULT_FLOOR_FALLBACK)!;
-    category = parsed.category;
-    role = parsed.role;
-  }
-
-  const resolvedCategory = category ?? "roble-claro";
-  const kind = PATTERN_CONFIG[resolvedCategory]?.kind ?? "wood";
+  const kind = PATTERN_CONFIG[category]?.kind ?? "wood";
 
   return (
     <div
@@ -55,10 +37,10 @@ export default function VinylFloorPattern({
       className={`${styles.root} ${className}`}
       data-role={role}
       data-kind={kind}
-      style={getPatternStyle(resolvedCategory, role)}
+      style={getPatternStyle(category, role)}
     >
       {showLabel && (
-        <span className={styles.label}>{getPatternLabel(resolvedCategory)}</span>
+        <span className={styles.label}>{getPatternLabel(category)}</span>
       )}
     </div>
   );

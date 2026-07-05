@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { FloorProduct } from "@/data/catalog";
+import VinylFloorPattern from "@/components/ui/VinylFloorPattern";
 import { buildWhatsAppUrl } from "@/lib/constants";
 
 type ProductCardProps = {
@@ -12,12 +12,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
-          src={product.image}
+        <VinylFloorPattern
+          category={product.patternCategory}
+          role="installed"
           alt={product.name}
-          fill
           className="object-cover transition duration-500 group-hover:scale-105"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-accent backdrop-blur-sm">
           {product.type}

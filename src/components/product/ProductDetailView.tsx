@@ -22,7 +22,7 @@ export default function ProductDetailView({ product }: ProductDetailViewProps) {
 
   return (
     <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-      <ProductGallery images={product.imagenes} alt={product.nombre} />
+      <ProductGallery category={product.patternCategory} alt={product.nombre} />
 
       <div>
         <div className="flex flex-wrap items-center gap-3">
