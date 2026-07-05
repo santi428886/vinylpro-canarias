@@ -84,10 +84,9 @@ export default function Header() {
               Ver catálogo
             </Button>
             <Button
-              href={buildWhatsAppUrl(DEFAULT_WHATSAPP_MESSAGE)}
+              href={isHome ? "#calculadora" : "/#calculadora"}
               variant="whatsapp"
               size="sm"
-              external
             >
               Presupuesto
             </Button>

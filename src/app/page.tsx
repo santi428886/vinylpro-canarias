@@ -16,6 +16,7 @@ export default function HomePage() {
   return (
     <>
       <HomeHero />
+      <FloorPriceCalculatorSection />
       <FloorTypeSelector />
       <FloorComparison />
       <WorkTimeline />
@@ -26,7 +27,6 @@ export default function HomePage() {
       <FeaturedCatalog />
       <ProcessSection />
       <HomeGalleryPreview />
-      <FloorPriceCalculatorSection />
       <CtaSection />
     </>
   );
