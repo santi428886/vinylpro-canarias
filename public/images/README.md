@@ -1,13 +1,13 @@
-# Imágenes auxiliares
-
-El catálogo de productos usa **`public/floors/{slug}/`** (ver `public/floors/README.md`).
-
-Esta carpeta contiene recursos de apoyo:
+# Biblioteca de imágenes
 
 ```
 public/images/
-  products/    — Fuente WebP intermedia (populate script)
-  rooms/       — Referencias por estancia (selectores)
-  textures/    — Muestras por familia de acabado
-  icons/       — Iconos SVG del proyecto
+  products/       — Galería por modelo ({slug}/portada|textura|salon|cocina|dormitorio.webp)
+  products/_reference/ — Láminas de referencia del catálogo (no servidas en runtime)
+  rooms/          — Imágenes por estancia (selectores)
+  textures/       — Muestras por familia de acabado
+  textures/_reference/ — Collages de referencia de acabados
+  icons/          — Iconos SVG del proyecto
 ```
+
+Rutas en código: `src/data/floor-gallery.ts` (`/images/products/`, `/images/rooms/`, `/images/textures/`).
