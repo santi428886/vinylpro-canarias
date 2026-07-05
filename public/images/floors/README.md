@@ -1,29 +1,21 @@
-# Imágenes de suelos — VinylPro Canarias
+# Texturas del catálogo
 
-Las imágenes del **catálogo de productos** se gestionan en código:
+El catálogo **no usa fotografías**. Cada producto muestra una textura CSS
+controlada según su tipo de suelo vinílico.
 
-```
-src/data/floor-images.ts → VINYL_FLOOR_LIBRARY
-```
+## Archivos
 
-## Cómo cambiar imágenes del catálogo
+| Archivo | Qué editar |
+|---------|------------|
+| `src/data/floor-images.ts` | Asignación producto → categoría de textura |
+| `src/components/ui/floor-texture-styles.ts` | Colores y patrones CSS por categoría |
 
-1. Abre `src/data/floor-images.ts`
-2. Localiza la categoría (ej. `roble-claro`, `espiga-oscura`, `nogal`)
-3. Sustituye la URL en el rol correspondiente:
-   - `texture` — primer plano de lamas PVC
-   - `installed` — suelo instalado en interior
-   - `detail` — detalle de color y veta
-   - `room` — estancia recomendada
+## Categorías
 
-## Imágenes locales (opcional)
+Roble claro/medio/oscuro · Gris claro/medio/oscuro · Espiga clara/oscura ·
+Piedra beige/gris · Hormigón claro/oscuro · Nogal · Blanco nórdico · Negro premium
 
-Esta carpeta está preparada para fotos de fabricante en el futuro.
-Si copias archivos aquí, añade la ruta en `VINYL_FLOOR_LIBRARY` y
-configura el dominio en `next.config.ts` si es necesario.
+## Fotos reales (futuro)
 
-## Reglas
-
-- Solo suelos vinílicos / PVC / laminado
-- Nunca casas exteriores, agua, plástico ni decoración sin suelo visible
-- La imagen del hero de la home no se usa en el catálogo
+Cuando tengas fotos de fabricante, copia a esta carpeta y adapta
+`textureToken()` + `FloorImage.tsx` para servir archivos locales.

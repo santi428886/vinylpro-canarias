@@ -19,7 +19,9 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
   const gallery =
-    images.length > 0 ? images.map(sanitizeFloorPath) : [DEFAULT_FLOOR_FALLBACK];
+    images.length > 0
+      ? images.map(sanitizeFloorPath)
+      : [DEFAULT_FLOOR_FALLBACK];
 
   const getSrc = (i: number) => gallery[i] ?? DEFAULT_FLOOR_FALLBACK;
 

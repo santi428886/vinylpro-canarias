@@ -93,6 +93,8 @@ export function localBusinessJsonLd() {
   };
 }
 
+import { textureTokenToOgImage } from "@/data/floor-images";
+
 export function productJsonLd(product: {
   nombre: string;
   descripcion: string;
@@ -105,7 +107,7 @@ export function productJsonLd(product: {
     "@type": "Product",
     name: product.nombre,
     description: product.descripcion,
-    image: product.imagen,
+    image: textureTokenToOgImage(product.imagen),
     url: `${SITE_URL}/modelo/${product.slug}`,
     offers: {
       "@type": "Offer",

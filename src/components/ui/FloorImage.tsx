@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
-import { useCallback, useState } from "react";
 import {
   DEFAULT_FLOOR_FALLBACK,
-  getFallbackChain,
+  parseTextureToken,
   sanitizeFloorPath,
 } from "@/data/floor-images";
+import FloorTextureVisual from "@/components/ui/FloorTextureVisual";
 
 type FloorImageProps = {
   src: string;
@@ -20,44 +19,24 @@ type FloorImageProps = {
   height?: number;
 };
 
+/**
+ * Visual del catálogo — renderiza texturas CSS de suelo vinílico.
+ * No carga imágenes externas: imposible mostrar contenido incorrecto.
+ */
 export default function FloorImage({
   src,
   alt,
-  fill = true,
-  priority = false,
-  loading,
-  className = "object-cover",
-  sizes = "(max-width: 768px) 100vw, 50vw",
-  width,
-  height,
+  className = "",
 }: FloorImageProps) {
-  const initial = sanitizeFloorPath(src);
-  const [currentSrc, setCurrentSrc] = useState(initial);
-  const [fallbackIndex, setFallbackIndex] = useState(0);
-
-  const handleError = useCallback(() => {
-    const chain = getFallbackChain(initial);
-    const nextIndex = fallbackIndex + 1;
-    if (nextIndex < chain.length) {
-      setFallbackIndex(nextIndex);
-      setCurrentSrc(chain[nextIndex]);
-    } else {
-      setCurrentSrc(DEFAULT_FLOOR_FALLBACK);
-    }
-  }, [initial, fallbackIndex]);
+  const token = sanitizeFloorPath(src);
+  const parsed = parseTextureToken(token) ?? parseTextureToken(DEFAULT_FLOOR_FALLBACK)!;
 
   return (
-    <Image
-      src={currentSrc}
+    <FloorTextureVisual
+      category={parsed.category}
+      variant={parsed.variant}
       alt={alt}
-      fill={fill && !width}
-      width={width}
-      height={height}
-      priority={priority}
-      loading={loading ?? (priority ? undefined : "lazy")}
       className={className}
-      sizes={sizes}
-      onError={handleError}
     />
   );
 }
