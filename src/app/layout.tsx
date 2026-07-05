@@ -1,23 +1,27 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { FloatingWhatsApp } from "@/components/shared/WhatsAppButton";
+import JsonLd from "@/components/seo/JsonLd";
+import {
+  createMetadata,
+  DEFAULT_DESCRIPTION,
+  localBusinessJsonLd,
+  SITE_NAME,
+} from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "VinylPro Canarias | Suelos vinílicos PVC en Gran Canaria",
-  description:
-    "Instalación de suelos vinílicos PVC en Gran Canaria. Material e instalación incluidos desde 24,90 €/m². Presupuesto gratis por WhatsApp.",
-  keywords: [
-    "suelo vinílico Gran Canaria",
-    "PVC click Las Palmas",
-    "instalación suelos vinílicos",
-    "VinylPro Canarias",
-  ],
-};
+export const metadata: Metadata = createMetadata({
+  title: `${SITE_NAME} | Suelos vinílicos PVC premium en Gran Canaria`,
+  description: DEFAULT_DESCRIPTION,
+});
 
 export default function RootLayout({
   children,
@@ -25,9 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} scroll-smooth`}>
+    <html lang="es" className={inter.variable}>
       <body className="min-h-screen bg-white font-sans text-foreground antialiased">
-        {children}
+        <JsonLd data={localBusinessJsonLd()} />
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <FloatingWhatsApp />
       </body>
     </html>
   );

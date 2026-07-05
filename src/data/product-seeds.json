@@ -1,0 +1,303 @@
+[
+  {
+    "baseName": "Roble Natural",
+    "baseSlug": "roble-natural",
+    "basePrice": 24.9,
+    "basePopularity": 98,
+    "coleccion": "Essentials",
+    "imagen": "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80"
+    ],
+    "grosor": "5 mm",
+    "acabado": "Mate satinado",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Roble natural con vetas suaves y tono cálido. Ideal para salones y dormitorios que buscan luminosidad y calidez.",
+    "caracteristicas": ["100% resistente al agua", "Sistema click", "Antideslizante", "Compatible con calefacción radiante"],
+    "tipo": "roble",
+    "usos": ["vivienda", "cocina"],
+    "variants": [
+      { "suffix": "Claro", "color": "claro" },
+      { "suffix": "Arena", "color": "medio", "priceOffset": 1 },
+      { "suffix": "Noche", "color": "oscuro", "priceOffset": 2.5 }
+    ]
+  },
+  {
+    "baseName": "Roble Gris Nórdico",
+    "baseSlug": "roble-gris-nordico",
+    "basePrice": 25.9,
+    "basePopularity": 95,
+    "coleccion": "Essentials",
+    "imagen": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80"
+    ],
+    "grosor": "5 mm",
+    "acabado": "Mate",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Estética escandinava con gris neutro. Perfecto para espacios minimalistas y pisos turísticos.",
+    "caracteristicas": ["100% resistente al agua", "Sistema click", "Antirayado", "Instalación flotante"],
+    "tipo": "roble",
+    "usos": ["vivienda", "local"],
+    "variants": [
+      { "suffix": "Plata", "color": "claro" },
+      { "suffix": "Grafito", "color": "medio", "priceOffset": 1 },
+      { "suffix": "Antracita", "color": "oscuro", "priceOffset": 2 }
+    ]
+  },
+  {
+    "baseName": "Espiga Heritage",
+    "baseSlug": "espiga-heritage",
+    "basePrice": 34.9,
+    "basePopularity": 88,
+    "coleccion": "Signature",
+    "imagen": "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80"
+    ],
+    "grosor": "6 mm",
+    "acabado": "Premium texturizado",
+    "resistencia": "Clase 34 AC6",
+    "garantia": "20 años",
+    "descripcion": "Patrón espiga clásico con acabado de alta gama. El más elegante para proyectos residenciales premium.",
+    "caracteristicas": ["100% resistente al agua", "Espiga auténtica", "Capa de uso reforzada", "Acabado premium"],
+    "tipo": "espiga",
+    "usos": ["vivienda", "local"],
+    "variants": [
+      { "suffix": "Natural", "color": "claro" },
+      { "suffix": "Cognac", "color": "medio", "priceOffset": 2 },
+      { "suffix": "Ébano", "color": "oscuro", "priceOffset": 3.5 }
+    ]
+  },
+  {
+    "baseName": "Cemento Urban",
+    "baseSlug": "cemento-urban",
+    "basePrice": 27.9,
+    "basePopularity": 92,
+    "coleccion": "Industrial",
+    "imagen": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80"
+    ],
+    "grosor": "5.5 mm",
+    "acabado": "Cemento pulido",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Efecto cemento industrial de tendencia. Muy demandado en cocinas, locales y espacios contemporáneos.",
+    "caracteristicas": ["100% resistente al agua", "Efecto microcemento", "Alta resistencia", "Fácil mantenimiento"],
+    "tipo": "hormigon",
+    "usos": ["cocina", "local", "vivienda"],
+    "variants": [
+      { "suffix": "Blanco", "color": "claro" },
+      { "suffix": "Gris", "color": "medio" },
+      { "suffix": "Antracita", "color": "oscuro", "priceOffset": 1.5 }
+    ]
+  },
+  {
+    "baseName": "Piedra Caliza",
+    "baseSlug": "piedra-caliza",
+    "basePrice": 29.9,
+    "basePopularity": 85,
+    "coleccion": "Stone",
+    "imagen": "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80",
+      "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=1200&q=80"
+    ],
+    "grosor": "5 mm",
+    "acabado": "Piedra natural",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Reproducción fiel de piedra caliza con textura táctil. Ideal para baños y zonas húmedas.",
+    "caracteristicas": ["100% resistente al agua", "Antideslizante R10", "Ideal baños", "Sin juntas visibles"],
+    "tipo": "piedra",
+    "usos": ["bano", "cocina", "vivienda"],
+    "variants": [
+      { "suffix": "Marfil", "color": "claro" },
+      { "suffix": "Taupe", "color": "medio", "priceOffset": 1 },
+      { "suffix": "Slate", "color": "oscuro", "priceOffset": 2 }
+    ]
+  },
+  {
+    "baseName": "Madera Oscura Premium",
+    "baseSlug": "madera-oscura-premium",
+    "basePrice": 29.9,
+    "basePopularity": 90,
+    "coleccion": "Signature",
+    "imagen": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80"
+    ],
+    "grosor": "6 mm",
+    "acabado": "Brillo satinado",
+    "resistencia": "Clase 34 AC6",
+    "garantia": "20 años",
+    "descripcion": "Madera oscura de alto contraste con acabado sofisticado para ambientes exclusivos.",
+    "caracteristicas": ["100% resistente al agua", "Capa UV protectora", "Alta durabilidad", "Acabado premium"],
+    "tipo": "roble",
+    "usos": ["vivienda", "local"],
+    "variants": [
+      { "suffix": "Walnut", "color": "medio" },
+      { "suffix": "Wenge", "color": "oscuro", "priceOffset": 1.5 },
+      { "suffix": "Negro", "color": "oscuro", "priceOffset": 3, "popularityOffset": 5 }
+    ]
+  },
+  {
+    "baseName": "Espiga París",
+    "baseSlug": "espiga-paris",
+    "basePrice": 36.9,
+    "basePopularity": 82,
+    "coleccion": "Signature",
+    "imagen": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80"
+    ],
+    "grosor": "6.5 mm",
+    "acabado": "Espiga francesa",
+    "resistencia": "Clase 34 AC6",
+    "garantia": "20 años",
+    "descripcion": "Espiga francesa de diseño parisino. Referencia en proyectos de interiorismo de alto standing.",
+    "caracteristicas": ["100% resistente al agua", "Diseño espiga XL", "Instalación profesional", "Garantía extendida"],
+    "tipo": "espiga",
+    "usos": ["vivienda", "local"],
+    "variants": [
+      { "suffix": "Champagne", "color": "claro" },
+      { "suffix": "Miel", "color": "medio", "priceOffset": 2 },
+      { "suffix": "Cacao", "color": "oscuro", "priceOffset": 3 }
+    ]
+  },
+  {
+    "baseName": "Mármol Carrara",
+    "baseSlug": "marmol-carrara",
+    "basePrice": 31.9,
+    "basePopularity": 78,
+    "coleccion": "Stone",
+    "imagen": "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80"
+    ],
+    "grosor": "5 mm",
+    "acabado": "Mármol pulido",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Efecto mármol Carrara con vetas sutiles. Elegancia atemporal para baños y cocinas premium.",
+    "caracteristicas": ["100% resistente al agua", "Efecto mármol", "Fácil limpieza", "Sin mantenimiento"],
+    "tipo": "piedra",
+    "usos": ["bano", "cocina", "vivienda"],
+    "variants": [
+      { "suffix": "Blanco", "color": "claro" },
+      { "suffix": "Gris", "color": "medio", "priceOffset": 1.5 },
+      { "suffix": "Negro", "color": "oscuro", "priceOffset": 3 }
+    ]
+  },
+  {
+    "baseName": "Hormigón Loft",
+    "baseSlug": "hormigon-loft",
+    "basePrice": 26.9,
+    "basePopularity": 87,
+    "coleccion": "Industrial",
+    "imagen": "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80"
+    ],
+    "grosor": "5 mm",
+    "acabado": "Hormigón crudo",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Estética loft neoyorquina con textura de hormigón crudo. Perfecto para locales comerciales.",
+    "caracteristicas": ["100% resistente al agua", "Alta resistencia comercial", "Instalación rápida", "Sin polvo"],
+    "tipo": "hormigon",
+    "usos": ["local", "vivienda", "cocina"],
+    "variants": [
+      { "suffix": "Claro", "color": "claro" },
+      { "suffix": "Medio", "color": "medio" },
+      { "suffix": "Oscuro", "color": "oscuro", "priceOffset": 1 }
+    ]
+  },
+  {
+    "baseName": "Roble Rústico",
+    "baseSlug": "roble-rustico",
+    "basePrice": 27.5,
+    "basePopularity": 84,
+    "coleccion": "Essentials",
+    "imagen": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=80",
+      "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=1200&q=80"
+    ],
+    "grosor": "5 mm",
+    "acabado": "Rústico cepillado",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Vetas marcadas y textura rústica que aporta carácter a cualquier estancia.",
+    "caracteristicas": ["100% resistente al agua", "Textura cepillada", "Aspecto auténtico", "Sistema click"],
+    "tipo": "roble",
+    "usos": ["vivienda", "cocina"],
+    "variants": [
+      { "suffix": "Natural", "color": "claro" },
+      { "suffix": "Avellana", "color": "medio", "priceOffset": 1 },
+      { "suffix": "Tostado", "color": "oscuro", "priceOffset": 2 }
+    ]
+  },
+  {
+    "baseName": "Slate Stone",
+    "baseSlug": "slate-stone",
+    "basePrice": 30.5,
+    "basePopularity": 76,
+    "coleccion": "Stone",
+    "imagen": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=1200&q=80"
+    ],
+    "grosor": "5.5 mm",
+    "acabado": "Pizarra natural",
+    "resistencia": "Clase 33 AC5",
+    "garantia": "15 años",
+    "descripcion": "Efecto pizarra con tonos profundos. Resistente y elegante para baños y cocinas.",
+    "caracteristicas": ["100% resistente al agua", "Antideslizante", "Efecto pizarra", "Ideal zonas húmedas"],
+    "tipo": "piedra",
+    "usos": ["bano", "cocina"],
+    "variants": [
+      { "suffix": "Gris", "color": "medio" },
+      { "suffix": "Antracita", "color": "oscuro", "priceOffset": 1.5 },
+      { "suffix": "Negro", "color": "oscuro", "priceOffset": 2.5 }
+    ]
+  },
+  {
+    "baseName": "Espiga Milán",
+    "baseSlug": "espiga-milan",
+    "basePrice": 35.5,
+    "basePopularity": 80,
+    "coleccion": "Signature",
+    "imagen": "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80",
+    "imagenes": [
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1200&q=80"
+    ],
+    "grosor": "6 mm",
+    "acabado": "Espiga italiana",
+    "resistencia": "Clase 34 AC6",
+    "garantia": "20 años",
+    "descripcion": "Diseño milanés con espiga refinada. Referencia en proyectos de diseño de interiores.",
+    "caracteristicas": ["100% resistente al agua", "Espiga premium", "Acabado italiano", "Alta durabilidad"],
+    "tipo": "espiga",
+    "usos": ["vivienda", "local"],
+    "variants": [
+      { "suffix": "Perla", "color": "claro" },
+      { "suffix": "Caramelo", "color": "medio", "priceOffset": 2 },
+      { "suffix": "Nogal", "color": "oscuro", "priceOffset": 3 }
+    ]
+  }
+]
