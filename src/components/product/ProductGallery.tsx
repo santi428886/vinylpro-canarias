@@ -1,9 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
+import FloorImage from "@/components/ui/FloorImage";
+import { DEFAULT_FLOOR_FALLBACK, sanitizeFloorUrl } from "@/data/floor-images";
 
 type ProductGalleryProps = {
   images: string[];
@@ -13,7 +14,11 @@ type ProductGalleryProps = {
 export default function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
-  const gallery = images.length > 0 ? images : ["/placeholder.jpg"];
+  const gallery = images.length > 0 ? images.map(sanitizeFloorUrl) : [DEFAULT_FLOOR_FALLBACK];
+  const [failed, setFailed] = useState<Set<number>>(new Set());
+
+  const getSrc = (i: number) =>
+    failed.has(i) ? DEFAULT_FLOOR_FALLBACK : gallery[i];
 
   const goNext = useCallback(() => {
     setActive((i) => (i + 1) % gallery.length);
@@ -41,10 +46,9 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
                 transition={{ duration: 0.4 }}
                 className="absolute inset-0"
               >
-                <Image
-                  src={gallery[active]}
+                <FloorImage
+                  src={getSrc(active)}
                   alt={alt}
-                  fill
                   priority
                   className="object-cover transition duration-700 group-hover:scale-[1.02]"
                   sizes="(max-width: 1024px) 100vw, 55vw"
@@ -99,7 +103,7 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
                     : "opacity-50 hover:opacity-100"
                 }`}
               >
-                <Image src={img} alt="" fill className="object-cover" sizes="80px" />
+                <FloorImage src={getSrc(i)} alt="" sizes="80px" />
               </button>
             ))}
           </div>
@@ -126,10 +130,9 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
               </button>
             </div>
             <div className="relative flex-1">
-              <Image
-                src={gallery[active]}
+              <FloorImage
+                src={getSrc(active)}
                 alt={alt}
-                fill
                 className="object-contain p-4"
                 sizes="100vw"
               />

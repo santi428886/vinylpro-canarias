@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Product } from "@/types/product";
@@ -8,6 +7,7 @@ import { COLLECTION_LABELS } from "@/types/product";
 import { buildWhatsAppUrl } from "@/lib/constants";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
+import FloorImage from "@/components/ui/FloorImage";
 import FavoriteButton from "./FavoriteButton";
 import CompareToggle from "./CompareToggle";
 import ProductBadgeTag from "./ProductBadgeTag";
@@ -26,40 +26,35 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-shadow duration-500 hover:shadow-2xl hover:shadow-black/[0.08]"
+      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-border/60 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/[0.08] hover:ring-border"
     >
       <Link
         href={`/modelo/${product.slug}`}
-        className="relative aspect-[3/4] overflow-hidden sm:aspect-[4/5]"
+        className="relative block aspect-[4/5] min-h-[320px] overflow-hidden bg-surface sm:min-h-[380px]"
       >
-        <Image
+        <FloorImage
           src={product.imagen}
           alt={product.nombre}
-          fill
-          loading="lazy"
-          className="object-cover transition duration-700 group-hover:scale-[1.03] group-hover:opacity-0"
+          className="object-cover transition duration-700 group-hover:scale-[1.04] group-hover:opacity-0"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <Image
+        <FloorImage
           src={product.imagenHover}
           alt=""
-          fill
-          loading="lazy"
-          aria-hidden
-          className="object-cover opacity-0 transition duration-700 group-hover:scale-[1.03] group-hover:opacity-100"
+          className="object-cover opacity-0 transition duration-700 group-hover:scale-[1.04] group-hover:opacity-100"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
 
-        <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+        <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
           {product.badge && <ProductBadgeTag badge={product.badge} />}
           <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-medium text-foreground backdrop-blur-sm">
             {COLLECTION_LABELS[product.temaColeccion]}
           </span>
         </div>
 
-        <div className="absolute right-4 top-4 flex flex-col gap-2">
+        <div className="absolute right-4 top-4 z-10 flex flex-col gap-2">
           <FavoriteButton slug={product.slug} />
           <CompareToggle slug={product.slug} />
         </div>
@@ -91,20 +86,14 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         </div>
 
         <div className="mt-6 border-t border-border pt-6">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-wider text-muted">
-                Instalado
-              </p>
-              <p className="text-2xl font-semibold text-foreground sm:text-3xl">
-                {formatEuro(product.precio)}
-                <span className="text-sm font-normal text-muted"> /m²</span>
-              </p>
-              <p className="mt-1 text-xs text-muted">
-                Material: {formatEuro(product.precioMaterial)}/m²
-              </p>
-            </div>
-          </div>
+          <p className="text-xs uppercase tracking-wider text-muted">Instalado</p>
+          <p className="text-2xl font-semibold text-foreground sm:text-3xl">
+            {formatEuro(product.precio)}
+            <span className="text-sm font-normal text-muted"> /m²</span>
+          </p>
+          <p className="mt-1 text-xs text-muted">
+            Material: {formatEuro(product.precioMaterial)}/m²
+          </p>
         </div>
 
         <a

@@ -7,6 +7,7 @@ import type {
   PriceRange,
 } from "@/types/product";
 import { INSTALLATION_COST_M2 } from "@/types/product";
+import { resolveProductImages } from "@/data/floor-images";
 
 function hashSlug(slug: string): number {
   let h = 0;
@@ -102,10 +103,24 @@ export function enrichProduct(
     | "precioMaterial"
   >,
 ): Product {
-  const imagenHover = p.imagenes[1] ?? p.imagen;
+  const images = resolveProductImages(
+    p.slug,
+    {
+      tipo: p.tipo,
+      color: p.color,
+      sistema: p.sistema,
+      nombre: p.nombre,
+      acabado: p.acabado,
+      coleccion: p.coleccion,
+    },
+    [p.imagen, ...p.imagenes],
+  );
+
   const base = {
     ...p,
-    imagenHover,
+    imagen: images.imagen,
+    imagenHover: images.imagenHover,
+    imagenes: images.imagenes,
     precioMaterial: Math.max(p.precio - INSTALLATION_COST_M2, 12),
     temaColeccion: resolveTemaColeccion(p),
     badge: null as ProductBadge | null,

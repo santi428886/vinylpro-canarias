@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Product } from "@/types/product";
 import { formatEuro } from "@/lib/calculator";
+import FloorImage from "@/components/ui/FloorImage";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 
@@ -30,12 +30,10 @@ export default function SimilarProducts({ products }: SimilarProductsProps) {
                 href={`/modelo/${product.slug}`}
                 className="group block overflow-hidden rounded-2xl bg-white transition hover:shadow-lg"
               >
-                <div className="relative aspect-square overflow-hidden">
-                  <Image
+                <div className="relative aspect-square overflow-hidden bg-surface">
+                  <FloorImage
                     src={product.imagen}
                     alt={product.nombre}
-                    fill
-                    loading="lazy"
                     className="object-cover transition duration-500 group-hover:scale-105"
                     sizes="25vw"
                   />

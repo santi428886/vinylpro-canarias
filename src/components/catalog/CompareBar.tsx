@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { GitCompareArrows, X } from "lucide-react";
 import { useCatalogExperience } from "@/context/CatalogExperienceContext";
 import { getProductsBySlugs } from "@/lib/products";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
+import FloorImage from "@/components/ui/FloorImage";
 import StarRating from "./StarRating";
 
 export default function CompareBar() {
@@ -79,11 +79,10 @@ export default function CompareBar() {
                       key={p.slug}
                       className="overflow-hidden rounded-2xl border border-border"
                     >
-                      <div className="relative aspect-[4/3]">
-                        <Image
+                      <div className="relative aspect-[4/3] bg-surface">
+                        <FloorImage
                           src={p.imagen}
                           alt={p.nombre}
-                          fill
                           className="object-cover"
                           sizes="33vw"
                         />

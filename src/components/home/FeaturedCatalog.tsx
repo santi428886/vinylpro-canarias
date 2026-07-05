@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/products";
+import FloorImage from "@/components/ui/FloorImage";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
@@ -28,11 +28,9 @@ export default function FeaturedCatalog() {
                 className="group block overflow-hidden rounded-2xl bg-surface transition-all duration-500 hover:shadow-xl hover:shadow-black/5"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
+                  <FloorImage
                     src={product.imagen}
                     alt={product.nombre}
-                    fill
-                    loading="lazy"
                     className="object-cover transition duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
