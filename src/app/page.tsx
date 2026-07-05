@@ -9,6 +9,7 @@ import Benefits from "@/components/home/Benefits";
 import FeaturedCatalog from "@/components/home/FeaturedCatalog";
 import ProcessSection from "@/components/home/ProcessSection";
 import HomeGalleryPreview from "@/components/home/HomeGalleryPreview";
+import FloorPriceCalculatorSection from "@/components/home/FloorPriceCalculatorSection";
 import CtaSection from "@/components/home/CtaSection";
 
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
       <FeaturedCatalog />
       <ProcessSection />
       <HomeGalleryPreview />
+      <FloorPriceCalculatorSection />
       <CtaSection />
     </>
   );
