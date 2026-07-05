@@ -124,7 +124,10 @@ export default function CatalogFilters({
     filters.sistema?.length ||
     filters.coleccion?.length ||
     filters.acabado?.length ||
-    filters.precioRange?.length;
+    filters.precioRange?.length ||
+    filters.patternCategory?.length ||
+    filters.visualColor ||
+    filters.room;
 
   return (
     <div className="space-y-8 rounded-3xl border border-border bg-surface/50 p-6 sm:p-8">
@@ -221,7 +224,14 @@ export default function CatalogFilters({
       {hasFilters && (
         <button
           type="button"
-          onClick={() => onChange({ sort: filters.sort })}
+          onClick={() =>
+            onChange({
+              sort: filters.sort,
+              visualColor: null,
+              room: null,
+              patternCategory: undefined,
+            })
+          }
           className="text-sm font-medium text-accent hover:underline"
         >
           Limpiar todos los filtros

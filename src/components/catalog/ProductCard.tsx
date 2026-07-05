@@ -26,31 +26,33 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="group relative flex min-h-[480px] flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-border/60 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/[0.08] hover:ring-border sm:min-h-[540px]"
+      className="group relative flex min-h-[520px] flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.06] transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:ring-black/10 sm:min-h-[560px]"
     >
       <Link
         href={`/modelo/${product.slug}`}
-        className="relative flex-[7] min-h-0 overflow-hidden bg-surface"
+        className="relative flex-[7] min-h-0 overflow-hidden bg-neutral-100"
       >
-        <VinylFloorPattern
-          category={product.patternCategory}
-          role="installed"
-          alt={product.nombre}
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-0"
-        />
-        <VinylFloorPattern
-          category={product.patternCategory}
-          role="texture"
-          alt=""
-          className="object-cover opacity-0 transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:opacity-100"
-        />
+        <div className="absolute inset-3 overflow-hidden rounded-xl ring-1 ring-black/[0.08] sm:inset-4">
+          <VinylFloorPattern
+            category={product.patternCategory}
+            role="texture"
+            alt={product.nombre}
+            className="transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:opacity-0"
+          />
+          <VinylFloorPattern
+            category={product.patternCategory}
+            role="installed"
+            alt=""
+            className="opacity-0 transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:opacity-100"
+          />
+        </div>
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
 
         <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
           {product.badge && <ProductBadgeTag badge={product.badge} />}
-          <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-medium text-foreground backdrop-blur-sm">
-            {COLLECTION_LABELS[product.temaColeccion]}
+          <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-medium text-foreground shadow-sm backdrop-blur-sm">
+            Muestra vinílica
           </span>
         </div>
 
@@ -62,6 +64,9 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
 
       <div className="flex flex-[3] flex-col p-5 sm:p-6">
         <div className="flex flex-wrap gap-2">
+          <span className="rounded-full bg-surface px-3 py-1 text-xs text-muted">
+            {COLLECTION_LABELS[product.temaColeccion]}
+          </span>
           <span className="rounded-full bg-surface px-3 py-1 text-xs text-muted">
             {getSistemaLabel(product.sistema)}
           </span>

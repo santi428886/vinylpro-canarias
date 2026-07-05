@@ -211,8 +211,21 @@ export function filterProducts(
       filters.precioRange!.includes(resolvePriceRange(p.precio)),
     );
   }
+  if (filters.patternCategory?.length) {
+    result = result.filter((p) =>
+      filters.patternCategory!.includes(p.patternCategory),
+    );
+  }
 
   return sortProducts(result, filters.sort ?? "popularidad");
+}
+
+export function getBestSellerProducts(
+  slugs: string[],
+): Product[] {
+  return slugs
+    .map((slug) => getProductBySlug(slug))
+    .filter((p): p is Product => p !== undefined);
 }
 
 export function getFeaturedProducts(limit = 6): Product[] {

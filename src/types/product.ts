@@ -1,4 +1,5 @@
 import type { VinylFloorCategory } from "@/data/floor-patterns";
+import type { VisualColorId } from "@/data/catalog-visual";
 
 export type ColorTone = "claro" | "medio" | "oscuro";
 
@@ -66,6 +67,9 @@ export type ProductFilters = {
   coleccion?: CollectionTheme[];
   acabado?: string[];
   precioRange?: PriceRange[];
+  patternCategory?: VinylFloorCategory[];
+  visualColor?: VisualColorId | null;
+  room?: import("@/data/catalog-visual").RoomId | null;
   sort?: SortOption;
 };
 
