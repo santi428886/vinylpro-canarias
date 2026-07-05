@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/shared/WhatsAppButton";
+import { CatalogExperienceProvider } from "@/context/CatalogExperienceContext";
 import JsonLd from "@/components/seo/JsonLd";
 import {
   createMetadata,
@@ -32,10 +33,12 @@ export default function RootLayout({
     <html lang="es" className={inter.variable}>
       <body className="min-h-screen bg-white font-sans text-foreground antialiased">
         <JsonLd data={localBusinessJsonLd()} />
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <FloatingWhatsApp />
+        <CatalogExperienceProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <FloatingWhatsApp />
+        </CatalogExperienceProvider>
       </body>
     </html>
   );

@@ -8,14 +8,39 @@ export type UsageType = "vivienda" | "bano" | "cocina" | "local";
 
 export type SortOption = "precio" | "nombre" | "popularidad";
 
+export type ProductBadge = "nuevo" | "premium" | "mas-vendido" | "oferta";
+
+export type CollectionTheme =
+  | "roble-natural"
+  | "nordico"
+  | "espiga"
+  | "industrial"
+  | "piedra"
+  | "hormigon"
+  | "premium";
+
+export type PriceRange = "economico" | "medio" | "premium";
+
+export type ProductRatings = {
+  resistencia: number;
+  agua: number;
+  mascotas: number;
+  ninos: number;
+  oficinas: number;
+  calefaccion: number;
+};
+
 export type Product = {
   id: string;
   slug: string;
   nombre: string;
   coleccion: string;
+  temaColeccion: CollectionTheme;
   imagen: string;
+  imagenHover: string;
   imagenes: string[];
   precio: number;
+  precioMaterial: number;
   grosor: string;
   color: ColorTone;
   acabado: string;
@@ -27,6 +52,10 @@ export type Product = {
   sistema: FloorSystem;
   usos: UsageType[];
   popularidad: number;
+  badge: ProductBadge | null;
+  ratings: ProductRatings;
+  nivelUso: string;
+  habitaciones: string[];
 };
 
 export type ProductFilters = {
@@ -34,12 +63,28 @@ export type ProductFilters = {
   tipo?: FloorType[];
   uso?: UsageType[];
   sistema?: FloorSystem[];
+  coleccion?: CollectionTheme[];
+  acabado?: string[];
+  precioRange?: PriceRange[];
   sort?: SortOption;
 };
 
 export type ProductSeed = Omit<
   Product,
-  "id" | "slug" | "nombre" | "color" | "precio" | "popularidad" | "sistema"
+  | "id"
+  | "slug"
+  | "nombre"
+  | "color"
+  | "precio"
+  | "precioMaterial"
+  | "popularidad"
+  | "sistema"
+  | "badge"
+  | "ratings"
+  | "nivelUso"
+  | "habitaciones"
+  | "temaColeccion"
+  | "imagenHover"
 > & {
   baseName: string;
   baseSlug: string;
@@ -53,3 +98,22 @@ export type ProductSeed = Omit<
     popularityOffset?: number;
   }>;
 };
+
+export const COLLECTION_LABELS: Record<CollectionTheme, string> = {
+  "roble-natural": "Roble Natural",
+  nordico: "Nórdico",
+  espiga: "Espiga",
+  industrial: "Industrial",
+  piedra: "Piedra",
+  hormigon: "Hormigón",
+  premium: "Premium",
+};
+
+export const BADGE_LABELS: Record<ProductBadge, string> = {
+  nuevo: "Nuevo",
+  premium: "Premium",
+  "mas-vendido": "Más vendido",
+  oferta: "Oferta",
+};
+
+export const INSTALLATION_COST_M2 = 6.5;

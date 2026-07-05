@@ -1,4 +1,6 @@
 import productSeeds from "@/data/product-seeds.json";
+import { enrichProduct } from "@/lib/product-enrichment";
+import { resolvePriceRange } from "@/lib/product-enrichment";
 import type {
   FloorSystem,
   Product,
@@ -40,69 +42,73 @@ function expandSeeds(seeds: ProductSeed[]): Product[] {
       const nombre = `${seed.baseName} ${variant.suffix}`;
       const slug = slugify(`${seed.baseSlug}-${variant.suffix}`);
 
-      products.push({
-        id: slug,
-        slug,
-        nombre,
-        coleccion: seed.coleccion,
-        imagen: seed.imagen,
-        imagenes: seed.imagenes,
-        precio: seed.basePrice + (variant.priceOffset ?? 0),
-        grosor: seed.grosor,
-        color: variant.color,
-        acabado: seed.acabado,
-        resistencia: seed.resistencia,
-        garantia: seed.garantia,
-        descripcion: seed.descripcion,
-        caracteristicas: seed.caracteristicas,
-        tipo: seed.tipo,
-        sistema,
-        usos: seed.usos,
-        popularidad:
-          seed.basePopularity + (variant.popularityOffset ?? 0),
-      });
+      products.push(
+        enrichProduct({
+          id: slug,
+          slug,
+          nombre,
+          coleccion: seed.coleccion,
+          imagen: seed.imagen,
+          imagenes: seed.imagenes,
+          precio: seed.basePrice + (variant.priceOffset ?? 0),
+          grosor: seed.grosor,
+          color: variant.color,
+          acabado: seed.acabado,
+          resistencia: seed.resistencia,
+          garantia: seed.garantia,
+          descripcion: seed.descripcion,
+          caracteristicas: seed.caracteristicas,
+          tipo: seed.tipo,
+          sistema,
+          usos: seed.usos,
+          popularidad:
+            seed.basePopularity + (variant.popularityOffset ?? 0),
+        }),
+      );
     }
   }
 
   return products;
 }
 
-/** Generates XL and Compact variants to scale catalog beyond 100 models. */
 function expandVariants(products: Product[]): Product[] {
   const extended = [...products];
 
   for (const p of products) {
-    extended.push({
-      ...p,
-      id: `${p.id}-xl`,
-      slug: `${p.slug}-xl`,
-      nombre: `${p.nombre} XL`,
-      precio: p.precio + 2.5,
-      grosor: "8 mm",
-      acabado: `${p.acabado} reforzado`,
-      sistema: p.sistema === "adhesivo" ? "spc-click" : p.sistema,
-      popularidad: p.popularidad - 8,
-      descripcion: `${p.descripcion} Versión XL con mayor grosor y resistencia.`,
-    });
+    extended.push(
+      enrichProduct({
+        ...p,
+        id: `${p.id}-xl`,
+        slug: `${p.slug}-xl`,
+        nombre: `${p.nombre} XL`,
+        precio: p.precio + 2.5,
+        grosor: "8 mm",
+        acabado: `${p.acabado} reforzado`,
+        sistema: p.sistema === "adhesivo" ? "spc-click" : p.sistema,
+        popularidad: p.popularidad - 8,
+        descripcion: `${p.descripcion} Versión XL con mayor grosor y resistencia.`,
+      }),
+    );
 
-    extended.push({
-      ...p,
-      id: `${p.id}-compact`,
-      slug: `${p.slug}-compact`,
-      nombre: `${p.nombre} Compact`,
-      precio: p.precio - 1.5,
-      grosor: "2.5 mm",
-      acabado: `${p.acabado} compacto`,
-      sistema: "adhesivo",
-      popularidad: p.popularidad - 12,
-      descripcion: `${p.descripcion} Versión compacta ideal para reformas rápidas.`,
-    });
+    extended.push(
+      enrichProduct({
+        ...p,
+        id: `${p.id}-compact`,
+        slug: `${p.slug}-compact`,
+        nombre: `${p.nombre} Compact`,
+        precio: p.precio - 1.5,
+        grosor: "2.5 mm",
+        acabado: `${p.acabado} compacto`,
+        sistema: "adhesivo",
+        popularidad: p.popularidad - 12,
+        descripcion: `${p.descripcion} Versión compacta ideal para reformas rápidas.`,
+      }),
+    );
   }
 
   return extended;
 }
 
-/** Full catalog — expand seeds to 100+ models. Add entries to product-seeds.json to grow. */
 export const allProducts: Product[] = expandVariants(
   expandSeeds(productSeeds as ProductSeed[]),
 );
@@ -111,12 +117,18 @@ export function getProductBySlug(slug: string): Product | undefined {
   return allProducts.find((p) => p.slug === slug);
 }
 
+export function getProductsBySlugs(slugs: string[]): Product[] {
+  return slugs
+    .map((slug) => getProductBySlug(slug))
+    .filter((p): p is Product => p !== undefined);
+}
+
 export function getSimilarProducts(product: Product, limit = 4): Product[] {
   return allProducts
     .filter(
       (p) =>
         p.slug !== product.slug &&
-        (p.tipo === product.tipo || p.coleccion === product.coleccion),
+        (p.tipo === product.tipo || p.temaColeccion === product.temaColeccion),
     )
     .sort((a, b) => b.popularidad - a.popularidad)
     .slice(0, limit);
@@ -124,6 +136,10 @@ export function getSimilarProducts(product: Product, limit = 4): Product[] {
 
 export function getAllSlugs(): string[] {
   return allProducts.map((p) => p.slug);
+}
+
+export function getUniqueAcabados(): string[] {
+  return [...new Set(allProducts.map((p) => p.acabado))].sort();
 }
 
 function sortProducts(products: Product[], sort: SortOption): Product[] {
@@ -159,6 +175,19 @@ export function filterProducts(
   if (filters.sistema?.length) {
     result = result.filter((p) => filters.sistema!.includes(p.sistema));
   }
+  if (filters.coleccion?.length) {
+    result = result.filter((p) =>
+      filters.coleccion!.includes(p.temaColeccion),
+    );
+  }
+  if (filters.acabado?.length) {
+    result = result.filter((p) => filters.acabado!.includes(p.acabado));
+  }
+  if (filters.precioRange?.length) {
+    result = result.filter((p) =>
+      filters.precioRange!.includes(resolvePriceRange(p.precio)),
+    );
+  }
 
   return sortProducts(result, filters.sort ?? "popularidad");
 }
@@ -167,6 +196,6 @@ export function getFeaturedProducts(limit = 6): Product[] {
   return sortProducts(allProducts, "popularidad").slice(0, limit);
 }
 
-export function getCollections(): string[] {
-  return [...new Set(allProducts.map((p) => p.coleccion))].sort();
+export function getFavoriteProducts(slugs: string[]): Product[] {
+  return getProductsBySlugs(slugs);
 }

@@ -4,8 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Product } from "@/types/product";
+import { COLLECTION_LABELS } from "@/types/product";
 import { buildWhatsAppUrl } from "@/lib/constants";
 import { formatEuro } from "@/lib/calculator";
+import { getSistemaLabel } from "@/lib/product-enrichment";
+import FavoriteButton from "./FavoriteButton";
+import CompareToggle from "./CompareToggle";
+import ProductBadgeTag from "./ProductBadgeTag";
+import StarRating from "./StarRating";
 
 type ProductCardProps = {
   product: Product;
@@ -17,68 +23,95 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.04, duration: 0.4 }}
-      className="group flex flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-500 hover:shadow-xl hover:shadow-black/[0.06]"
+      transition={{ delay: index * 0.05, duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-sm transition-shadow duration-500 hover:shadow-2xl hover:shadow-black/[0.08]"
     >
-      <Link href={`/modelo/${product.slug}`} className="relative aspect-[4/3] overflow-hidden">
+      <Link
+        href={`/modelo/${product.slug}`}
+        className="relative aspect-[3/4] overflow-hidden sm:aspect-[4/5]"
+      >
         <Image
           src={product.imagen}
           alt={product.nombre}
           fill
           loading="lazy"
-          className="object-cover transition duration-700 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover transition duration-700 group-hover:scale-[1.03] group-hover:opacity-0"
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-medium backdrop-blur-sm">
-          {product.coleccion}
+        <Image
+          src={product.imagenHover}
+          alt=""
+          fill
+          loading="lazy"
+          aria-hidden
+          className="object-cover opacity-0 transition duration-700 group-hover:scale-[1.03] group-hover:opacity-100"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+
+        <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+          {product.badge && <ProductBadgeTag badge={product.badge} />}
+          <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-medium text-foreground backdrop-blur-sm">
+            {COLLECTION_LABELS[product.temaColeccion]}
+          </span>
+        </div>
+
+        <div className="absolute right-4 top-4 flex flex-col gap-2">
+          <FavoriteButton slug={product.slug} />
+          <CompareToggle slug={product.slug} />
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex flex-wrap gap-1.5">
-          <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs text-muted capitalize">
-            {product.sistema.replace("-", " ")}
+      <div className="flex flex-1 flex-col p-6 sm:p-8">
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full bg-surface px-3 py-1 text-xs text-muted">
+            {getSistemaLabel(product.sistema)}
           </span>
-          <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs text-muted capitalize">
-            {product.tipo}
-          </span>
-          <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs text-muted capitalize">
+          <span className="rounded-full bg-surface px-3 py-1 text-xs capitalize text-muted">
             {product.color}
           </span>
         </div>
 
         <Link href={`/modelo/${product.slug}`}>
-          <h3 className="mt-3 text-base font-semibold text-foreground transition hover:text-accent">
+          <h3 className="mt-4 text-xl font-semibold tracking-tight text-foreground transition group-hover:text-accent sm:text-2xl">
             {product.nombre}
           </h3>
         </Link>
 
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-muted line-clamp-2">
+        <p className="mt-3 flex-1 text-sm leading-relaxed text-muted line-clamp-2 sm:text-base">
           {product.descripcion}
         </p>
 
-        <ul className="mt-3 flex flex-wrap gap-1.5">
-          {product.caracteristicas.slice(0, 2).map((c) => (
-            <li key={c} className="text-xs text-muted">
-              ✓ {c}
-            </li>
-          ))}
-        </ul>
+        <div className="mt-4 space-y-1">
+          <StarRating value={product.ratings.resistencia} label="Resistencia" />
+          <StarRating value={product.ratings.agua} label="Agua" />
+        </div>
 
-        <div className="mt-4 border-t border-border pt-4">
-          <p className="text-xl font-semibold text-foreground">
-            {formatEuro(product.precio)}
-            <span className="text-sm font-normal text-muted"> /m² instalado</span>
-          </p>
+        <div className="mt-6 border-t border-border pt-6">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-muted">
+                Instalado
+              </p>
+              <p className="text-2xl font-semibold text-foreground sm:text-3xl">
+                {formatEuro(product.precio)}
+                <span className="text-sm font-normal text-muted"> /m²</span>
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                Material: {formatEuro(product.precioMaterial)}/m²
+              </p>
+            </div>
+          </div>
         </div>
 
         <a
           href={buildWhatsAppUrl(whatsappMessage)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#25D366] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#20bd5a]"
+          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-white transition hover:bg-foreground/90"
         >
           Pedir este modelo
         </a>

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 
 type ProductGalleryProps = {
   images: string[];
@@ -12,37 +13,90 @@ type ProductGalleryProps = {
 export default function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
+  const gallery = images.length > 0 ? images : ["/placeholder.jpg"];
+
+  const goNext = useCallback(() => {
+    setActive((i) => (i + 1) % gallery.length);
+  }, [gallery.length]);
+
+  const goPrev = useCallback(() => {
+    setActive((i) => (i - 1 + gallery.length) % gallery.length);
+  }, [gallery.length]);
 
   return (
     <>
       <div className="space-y-4">
-        <button
-          type="button"
-          onClick={() => setZoomOpen(true)}
-          className="group relative aspect-square w-full overflow-hidden rounded-2xl bg-surface"
-        >
-          <Image
-            src={images[active]}
-            alt={alt}
-            fill
-            priority
-            className="object-cover transition duration-500 group-hover:scale-105"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-          <span className="absolute bottom-4 right-4 rounded-full bg-black/50 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm opacity-0 transition group-hover:opacity-100">
-            Ampliar
-          </span>
-        </button>
+        <div className="relative overflow-hidden rounded-3xl bg-surface">
+          <button
+            type="button"
+            onClick={() => setZoomOpen(true)}
+            className="group relative aspect-[4/5] w-full sm:aspect-square lg:min-h-[560px]"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={gallery[active]}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={gallery[active]}
+                  alt={alt}
+                  fill
+                  priority
+                  className="object-cover transition duration-700 group-hover:scale-[1.02]"
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                />
+              </motion.div>
+            </AnimatePresence>
 
-        {images.length > 1 && (
-          <div className="flex gap-3">
-            {images.map((img, i) => (
+            <span className="absolute bottom-5 right-5 flex items-center gap-2 rounded-full bg-black/50 px-4 py-2 text-xs font-medium text-white opacity-0 backdrop-blur-md transition group-hover:opacity-100">
+              <Expand className="h-3.5 w-3.5" />
+              Ampliar
+            </span>
+
+            {gallery.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Anterior"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goPrev();
+                  }}
+                  className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 opacity-0 shadow-md transition group-hover:opacity-100"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Siguiente"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goNext();
+                  }}
+                  className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 opacity-0 shadow-md transition group-hover:opacity-100"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </>
+            )}
+          </button>
+        </div>
+
+        {gallery.length > 1 && (
+          <div className="flex gap-3 overflow-x-auto pb-1">
+            {gallery.map((img, i) => (
               <button
-                key={img}
+                key={`${img}-${i}`}
                 type="button"
                 onClick={() => setActive(i)}
-                className={`relative h-20 w-20 overflow-hidden rounded-xl transition ${
-                  active === i ? "ring-2 ring-accent ring-offset-2" : "opacity-60 hover:opacity-100"
+                className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-xl transition ${
+                  active === i
+                    ? "ring-2 ring-accent ring-offset-2"
+                    : "opacity-50 hover:opacity-100"
                 }`}
               >
                 <Image src={img} alt="" fill className="object-cover" sizes="80px" />
@@ -58,34 +112,42 @@ export default function ProductGallery({ images, alt }: ProductGalleryProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4"
-            onClick={() => setZoomOpen(false)}
+            className="fixed inset-0 z-[70] flex flex-col bg-black"
           >
-            <button
-              type="button"
-              aria-label="Cerrar"
-              className="absolute right-5 top-5 text-white/70 hover:text-white"
-              onClick={() => setZoomOpen(false)}
-            >
-              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              className="relative h-[80vh] w-full max-w-5xl"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="flex items-center justify-between px-5 py-4">
+              <p className="text-sm font-medium text-white/70">{alt}</p>
+              <button
+                type="button"
+                aria-label="Cerrar"
+                onClick={() => setZoomOpen(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="relative flex-1">
               <Image
-                src={images[active]}
+                src={gallery[active]}
                 alt={alt}
                 fill
-                className="object-contain"
-                sizes="90vw"
+                className="object-contain p-4"
+                sizes="100vw"
               />
-            </motion.div>
+            </div>
+            {gallery.length > 1 && (
+              <div className="flex justify-center gap-2 px-5 py-6">
+                {gallery.map((img, i) => (
+                  <button
+                    key={`zoom-${img}-${i}`}
+                    type="button"
+                    onClick={() => setActive(i)}
+                    className={`h-2 w-2 rounded-full transition ${
+                      active === i ? "bg-white" : "bg-white/30"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
