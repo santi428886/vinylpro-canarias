@@ -10,6 +10,7 @@ import FeaturedCatalog from "@/components/home/FeaturedCatalog";
 import ProcessSection from "@/components/home/ProcessSection";
 import HomeGalleryPreview from "@/components/home/HomeGalleryPreview";
 import FloorPriceCalculatorSection from "@/components/home/FloorPriceCalculatorSection";
+import InspirationGallery from "@/components/home/InspirationGallery";
 import CtaSection from "@/components/home/CtaSection";
 
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
       <FaqSection />
       <Benefits />
       <FeaturedCatalog />
+      <InspirationGallery />
       <ProcessSection />
       <HomeGalleryPreview />
       <CtaSection />

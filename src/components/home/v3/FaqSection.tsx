@@ -30,7 +30,7 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-surface py-24 sm:py-32">
+    <section className="section-padding bg-surface">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <FadeIn>
           <SectionHeader

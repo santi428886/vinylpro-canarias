@@ -5,11 +5,14 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { Product } from "@/types/product";
 import { COLLECTION_LABELS } from "@/types/product";
-import { buildWhatsAppUrl } from "@/lib/constants";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
 import CatalogProductImage from "./CatalogProductImage";
 import ProductFeatureBadges from "./ProductFeatureBadges";
+import {
+  ProductRating,
+  ProductAvailabilityBadges,
+} from "@/components/ui/ProductTrustBadges";
 import FavoriteButton from "./FavoriteButton";
 import CompareToggle from "./CompareToggle";
 
@@ -19,8 +22,6 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const whatsappMessage = `Hola VinylPro Canarias, me interesa el modelo "${product.nombre}" (${formatEuro(product.precio)}/m² instalado). ¿Podéis enviarme presupuesto?`;
-
   return (
     <motion.article
       initial={{ opacity: 0, y: 16 }}
@@ -67,6 +68,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           <span>{getSistemaLabel(product.sistema)}</span>
         </div>
 
+        <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
+          <ProductRating />
+          <ProductAvailabilityBadges />
+        </div>
+
         <Link href={`/modelo/${product.slug}`} className="mt-2.5 block">
           <h3 className="text-lg font-semibold leading-snug tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent sm:text-xl">
             {product.nombre}
@@ -87,15 +93,12 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               <span className="text-sm font-normal text-muted"> /m²</span>
             </p>
           </div>
-          <a
-            href={buildWhatsAppUrl(whatsappMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
+          <Link
+            href={`/modelo/${product.slug}`}
             className="shrink-0 rounded-full border border-foreground/15 px-4 py-2 text-xs font-medium text-foreground transition-all duration-200 hover:border-foreground hover:bg-foreground hover:text-white"
           >
-            Consultar
-          </a>
+            Ver modelo
+          </Link>
         </div>
       </div>
     </motion.article>

@@ -37,7 +37,7 @@ const icons: Record<string, ReactNode> = {
 
 export default function Benefits() {
   return (
-    <section className="border-b border-border bg-white py-20 sm:py-28">
+    <section className="section-padding border-b border-border bg-white">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-6">
           {benefits.map((item, i) => (

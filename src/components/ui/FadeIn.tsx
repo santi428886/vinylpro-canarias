@@ -13,10 +13,10 @@ type FadeInProps = {
 };
 
 const offsets = {
-  up: { y: 32, x: 0 },
-  down: { y: -32, x: 0 },
-  left: { x: 32, y: 0 },
-  right: { x: -32, y: 0 },
+  up: { y: 20, x: 0 },
+  down: { y: -20, x: 0 },
+  left: { x: 20, y: 0 },
+  right: { x: -20, y: 0 },
   none: { x: 0, y: 0 },
 };
 
@@ -25,7 +25,7 @@ export default function FadeIn({
   className = "",
   delay = 0,
   direction = "up",
-  duration = 0.6,
+  duration = 0.7,
   once = true,
 }: FadeInProps) {
   const prefersReducedMotion = useReducedMotion();

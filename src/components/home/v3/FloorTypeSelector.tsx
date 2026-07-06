@@ -9,7 +9,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function FloorTypeSelector() {
   return (
-    <section className="bg-white py-24 sm:py-32">
+    <section className="section-padding bg-white">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <FadeIn>
           <SectionHeader
@@ -19,10 +19,10 @@ export default function FloorTypeSelector() {
           />
         </FadeIn>
 
-        <div className="mt-20 space-y-8">
+        <div className="mt-20 space-y-12 lg:space-y-16">
           {floorSystems.map((system, i) => (
             <FadeIn key={system.id} delay={i * 0.1}>
-              <article className="group overflow-hidden rounded-3xl border border-border bg-white transition-shadow duration-500 hover:shadow-2xl hover:shadow-black/[0.06]">
+              <article className="group overflow-hidden rounded-[2rem] border border-border/80 bg-white shadow-[0_8px_40px_-12px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_24px_60px_-16px_rgba(0,0,0,0.12)]">
                 <div
                   className={`grid lg:grid-cols-2 ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}
                 >
@@ -32,7 +32,7 @@ export default function FloorTypeSelector() {
                       alt={system.title}
                       fill
                       loading="lazy"
-                      className="object-cover transition duration-700 group-hover:scale-[1.03]"
+                      className="object-cover object-[center_75%] transition duration-700 ease-out group-hover:scale-[1.04]"
                       sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                   </div>

@@ -15,10 +15,10 @@ export default function HomeHero() {
           alt="Salón moderno con suelo vinílico premium"
           fill
           priority
-          className="object-cover opacity-50"
+          className="object-cover object-[center_75%]"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/55" />
       </div>
 
       <div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-32 sm:px-8 lg:px-12 lg:pt-40">
@@ -28,9 +28,23 @@ export default function HomeHero() {
           transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
           className="max-w-4xl"
         >
-          <p className="mb-6 text-xs font-semibold uppercase tracking-[0.25em] text-accent-light">
-            Gran Canaria · Instalación premium
-          </p>
+          <div className="mb-6 flex flex-wrap items-center gap-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent-light">
+              Gran Canaria · Instalación premium
+            </p>
+            <div className="flex flex-wrap items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/90 backdrop-blur-sm">
+              <span className="font-medium tracking-tight">
+                <span className="text-amber-400" aria-hidden>
+                  ★★★★★
+                </span>{" "}
+                5.0
+              </span>
+              <span className="hidden h-3 w-px bg-white/20 sm:block" aria-hidden />
+              <span className="text-white/80">
+                +300 instalaciones en Gran Canaria
+              </span>
+            </div>
+          </div>
 
           <h1 className="text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-7xl">
             Renueva cualquier espacio con suelo vinílico premium.

@@ -42,16 +42,18 @@ export default function CatalogProductImage({
         fill
         sizes={sizes}
         priority={priority}
+        loading={priority ? undefined : "lazy"}
         onError={onPrimaryError}
-        className={`object-cover ${className}`}
+        className={`object-cover object-[center_75%] ${className}`}
       />
       <Image
         src={hoverSrc}
         alt={`${alt} — detalle`}
         fill
         sizes={sizes}
+        loading="lazy"
         onError={onHoverError}
-        className={`object-cover ${hoverClassName}`}
+        className={`object-cover object-[center_75%] ${hoverClassName}`}
       />
     </>
   );

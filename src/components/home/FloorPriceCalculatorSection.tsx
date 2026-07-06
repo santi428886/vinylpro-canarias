@@ -5,7 +5,7 @@ export default function FloorPriceCalculatorSection() {
   return (
     <section
       id="calculadora"
-      className="scroll-mt-24 bg-surface py-20 sm:py-28"
+      className="scroll-mt-24 section-padding bg-surface"
       aria-labelledby="calculator-heading"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">

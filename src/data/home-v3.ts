@@ -1,3 +1,5 @@
+import { ambientImagePath } from "@/data/ambient-images";
+
 import type { FloorSystem } from "@/types/product";
 
 export const floorSystems: Array<{
@@ -17,8 +19,7 @@ export const floorSystems: Array<{
     subtitle: "El más versátil y resistente",
     description:
       "Núcleo rígido SPC con sistema click sin pegamento. La opción más completa para viviendas y locales con alto tránsito.",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+    image: ambientImagePath("gris-claro-premium"),
     idealFor: [
       "Viviendas",
       "Cocinas",
@@ -41,8 +42,7 @@ export const floorSystems: Array<{
     subtitle: "Reforma rápida y acabado natural",
     description:
       "Lamas finas que se pegan directamente sobre el pavimento existente. Perfecto para renovaciones sin levantar el suelo.",
-    image:
-      "https://images.unsplash.com/photo-1615874959472-d609969a20ed?w=1200&q=80",
+    image: ambientImagePath("roble-natural"),
     idealFor: ["Reformas rápidas", "Cocinas", "Baños", "Viviendas"],
     advantages: [
       "Muy fino",
@@ -59,8 +59,7 @@ export const floorSystems: Array<{
     subtitle: "Continuidad para grandes espacios",
     description:
       "Instalación continua sin juntas visibles. Solución eficiente para oficinas, habitaciones y superficies amplias.",
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80",
+    image: ambientImagePath("beige-arena"),
     idealFor: ["Grandes superficies", "Oficinas", "Habitaciones"],
     advantages: ["Continuidad visual", "Económico", "Muy cómodo"],
     cta: "Ver modelos en rollo",
@@ -240,34 +239,34 @@ export const installationIncludes = [
 
 export const whyVinylPro = [
   {
-    title: "Más de 100 modelos",
-    description: "Catálogo amplio con diseños para cada estilo y presupuesto.",
-    icon: "grid",
-  },
-  {
-    title: "Presupuesto en 24 horas",
-    description: "Respuesta rápida por WhatsApp con fotos y metros.",
-    icon: "clock",
+    title: "Instalación profesional",
+    description: "Equipo especializado únicamente en suelos vinílicos PVC.",
+    icon: "check",
   },
   {
     title: "Garantía",
     description: "15-20 años de garantía del fabricante más garantía de instalación.",
-    icon: "shield-check",
-  },
-  {
-    title: "Atención personalizada",
-    description: "Asesoramiento directo para elegir el suelo perfecto.",
-    icon: "user-check",
+    icon: "check",
   },
   {
     title: "Materiales premium",
     description: "Suelos certificados con acabados de calidad europea.",
-    icon: "award",
+    icon: "check",
   },
   {
-    title: "Instaladores especializados",
-    description: "Equipo experto únicamente en suelos vinílicos PVC.",
-    icon: "hard-hat",
+    title: "Resistente al agua",
+    description: "100% impermeable, ideal para cocinas, baños y zonas húmedas.",
+    icon: "check",
+  },
+  {
+    title: "Fácil limpieza",
+    description: "Solo barrido y fregado con productos neutros. Sin encerar.",
+    icon: "check",
+  },
+  {
+    title: "Presupuesto gratuito",
+    description: "Respuesta en 24 horas por WhatsApp con fotos y metros.",
+    icon: "check",
   },
 ];
 
