@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { allProducts, filterProducts } from "@/lib/products";
-import type { FloorSystem, ProductFilters } from "@/types/product";
+import type { FloorSystem, ProductFilters, SortOption } from "@/types/product";
 import type { RoomId, VisualColorId } from "@/data/catalog-visual";
 import CatalogFilters from "./CatalogFilters";
+import CatalogSearchBar from "./CatalogSearchBar";
 import ProductCard from "./ProductCard";
 import CompareBar from "./CompareBar";
 import RoomSelector from "./RoomSelector";
@@ -20,10 +21,12 @@ function isValidSistema(value: string | null): value is FloorSystem {
 export default function CatalogPageContent() {
   const [filters, setFilters] = useState<ProductFilters>({
     sort: "popularidad",
+    search: "",
   });
 
   useEffect(() => {
-    const sistema = new URLSearchParams(window.location.search).get("sistema");
+    const params = new URLSearchParams(window.location.search);
+    const sistema = params.get("sistema");
     if (isValidSistema(sistema)) {
       setFilters((prev) => ({ ...prev, sistema: [sistema] }));
     }
@@ -62,9 +65,17 @@ export default function CatalogPageContent() {
     [applyVisualFilters],
   );
 
+  const handleSearchChange = useCallback((search: string) => {
+    setFilters((prev) => ({ ...prev, search }));
+  }, []);
+
+  const handleSortChange = useCallback((sort: SortOption) => {
+    setFilters((prev) => ({ ...prev, sort }));
+  }, []);
+
   return (
     <>
-      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
         <RoomSelector
           activeRoom={filters.room ?? null}
           onSelect={handleRoomSelect}
@@ -78,36 +89,54 @@ export default function CatalogPageContent() {
 
       <div
         id="catalog-grid"
-        className="mx-auto max-w-7xl scroll-mt-28 px-5 pb-16 sm:px-8 lg:px-12"
+        className="border-t border-border/60 bg-[#fafaf9]"
       >
-        <h2 className="mb-8 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-          Catálogo completo
-          <span className="ml-2 text-base font-normal text-muted">
-            ({filtered.length} modelos)
-          </span>
-        </h2>
-
-        <div className="grid gap-10 xl:grid-cols-[320px_1fr]">
-          <aside className="xl:sticky xl:top-24 xl:self-start">
-            <CatalogFilters
-              filters={filters}
-              onChange={setFilters}
+        <div className="sticky top-[72px] z-30 border-b border-border/60 bg-[#fafaf9]/90 px-5 py-4 backdrop-blur-md sm:px-8 lg:px-12">
+          <div className="mx-auto max-w-[1400px]">
+            <CatalogSearchBar
+              search={filters.search ?? ""}
+              sort={filters.sort ?? "popularidad"}
               total={filtered.length}
+              onSearchChange={handleSearchChange}
+              onSortChange={handleSortChange}
             />
-          </aside>
+          </div>
+        </div>
 
-          <div>
-            {filtered.length === 0 ? (
-              <div className="rounded-3xl bg-white py-24 text-center">
-                <p className="text-muted">No hay modelos con estos filtros.</p>
+        <div className="mx-auto max-w-[1400px] px-5 pb-20 pt-10 sm:px-8 lg:px-12 lg:pb-24">
+          <div className="grid gap-10 xl:grid-cols-[280px_1fr] xl:gap-12">
+            <aside className="hidden xl:block">
+              <div className="sticky top-36">
+                <CatalogFilters filters={filters} onChange={setFilters} />
               </div>
-            ) : (
-              <div className="grid gap-8 lg:grid-cols-2">
-                {filtered.map((product, i) => (
-                  <ProductCard key={product.id} product={product} index={i} />
-                ))}
+            </aside>
+
+            <div>
+              <div className="mb-8 xl:hidden">
+                <CatalogFilters filters={filters} onChange={setFilters} />
               </div>
-            )}
+
+              {filtered.length === 0 ? (
+                <div className="rounded-2xl border border-border/80 bg-white py-24 text-center">
+                  <p className="text-muted">No hay modelos con estos filtros.</p>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFilters({ sort: filters.sort ?? "popularidad", search: "" })
+                    }
+                    className="mt-4 text-sm font-medium text-accent hover:underline"
+                  >
+                    Limpiar búsqueda y filtros
+                  </button>
+                </div>
+              ) : (
+                <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 xl:grid-cols-2 2xl:grid-cols-3">
+                  {filtered.map((product, i) => (
+                    <ProductCard key={product.id} product={product} index={i} />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

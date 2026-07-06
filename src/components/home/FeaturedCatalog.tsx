@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/products";
-import FloorImage from "@/components/ui/FloorImage";
+import CatalogProductImage from "@/components/catalog/CatalogProductImage";
+import ProductFeatureBadges from "@/components/catalog/ProductFeatureBadges";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
@@ -25,19 +26,17 @@ export default function FeaturedCatalog() {
             <FadeIn key={product.id} delay={i * 0.08}>
               <Link
                 href={`/modelo/${product.slug}`}
-                className="group block overflow-hidden rounded-2xl bg-surface transition-all duration-500 hover:shadow-xl hover:shadow-black/5"
+                className="group block overflow-hidden rounded-2xl bg-white ring-1 ring-border/80 transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)]"
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <FloorImage
+                <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100">
+                  <CatalogProductImage
                     slug={product.slug}
-                    shot="portada"
                     alt={product.nombre}
-                    fill
                     sizes="(max-width: 640px) 100vw, 33vw"
-                    className="transition duration-700 group-hover:scale-105"
+                    className="transition duration-700 group-hover:scale-[1.04]"
                   />
-                  <div className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
-                    {product.coleccion}
+                  <div className="absolute left-4 top-4 z-10">
+                    <ProductFeatureBadges product={product} />
                   </div>
                 </div>
                 <div className="p-6">
@@ -52,7 +51,10 @@ export default function FeaturedCatalog() {
                   </p>
                   <p className="mt-4 text-xl font-semibold text-foreground">
                     {formatEuro(product.precio)}
-                    <span className="text-sm font-normal text-muted"> /m² instalado</span>
+                    <span className="text-sm font-normal text-muted">
+                      {" "}
+                      /m² instalado
+                    </span>
                   </p>
                 </div>
               </Link>

@@ -11,6 +11,8 @@ export type UsageType = "vivienda" | "bano" | "cocina" | "local";
 
 export type SortOption = "precio" | "nombre" | "popularidad";
 
+export type ProductFormat = "estandar" | "xl" | "compact";
+
 export type ProductBadge = "nuevo" | "premium" | "mas-vendido" | "oferta";
 
 export type CollectionTheme =
@@ -70,6 +72,8 @@ export type ProductFilters = {
   patternCategory?: VinylFloorCategory[];
   visualColor?: VisualColorId | null;
   room?: import("@/data/catalog-visual").RoomId | null;
+  formato?: ProductFormat[];
+  search?: string;
   sort?: SortOption;
 };
 

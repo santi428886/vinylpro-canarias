@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import {
+  catalogCardImages,
   floorImagePath,
   primaryFloorImage,
   type FloorGalleryShot,
@@ -10,7 +11,9 @@ import {
 
 type FloorImageProps = {
   slug: string;
-  shot: FloorGalleryShot;
+  shot?: FloorGalleryShot;
+  /** Catálogo: ambiente + textura al hover */
+  variant?: "shot" | "catalog";
   alt: string;
   className?: string;
   fill?: boolean;
@@ -22,7 +25,8 @@ type FloorImageProps = {
 
 export default function FloorImage({
   slug,
-  shot,
+  shot = "portada",
+  variant = "shot",
   alt,
   className = "",
   fill,
@@ -31,11 +35,19 @@ export default function FloorImage({
   sizes = "(max-width: 768px) 100vw, 50vw",
   priority = false,
 }: FloorImageProps) {
-  const [src, setSrc] = useState(floorImagePath(slug, shot));
+  const catalog = variant === "catalog" ? catalogCardImages(slug) : null;
+  const initialSrc =
+    catalog?.primary ?? floorImagePath(slug, shot);
+  const hoverSrc = catalog?.hover ?? primaryFloorImage(slug);
+
+  const [src, setSrc] = useState(initialSrc);
   const fallback = primaryFloorImage(slug);
 
   const handleError = () => {
     if (src !== fallback) setSrc(fallback);
+    else if (catalog && src !== floorImagePath(slug, "portada")) {
+      setSrc(floorImagePath(slug, "portada"));
+    }
   };
 
   if (fill) {
@@ -48,6 +60,7 @@ export default function FloorImage({
         priority={priority}
         onError={handleError}
         className={`object-cover ${className}`}
+        data-hover-src={hoverSrc !== initialSrc ? hoverSrc : undefined}
       />
     );
   }

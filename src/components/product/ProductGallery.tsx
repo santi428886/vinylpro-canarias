@@ -1,14 +1,39 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import FloorImage from "@/components/ui/FloorImage";
+import { resolveAmbientImage } from "@/data/ambient-images";
 import {
   GALLERY_SHOTS,
   GALLERY_LABELS,
   type FloorGalleryShot,
 } from "@/data/floor-gallery";
+
+type GallerySlide = {
+  id: string;
+  label: string;
+  src?: string;
+  shot?: FloorGalleryShot;
+};
+
+function buildGallerySlides(slug: string): GallerySlide[] {
+  const ambient = resolveAmbientImage(slug);
+  const slides: GallerySlide[] = [];
+
+  if (ambient) {
+    slides.push({ id: "ambiente", label: "Ambiente instalado", src: ambient });
+  }
+
+  for (const shot of GALLERY_SHOTS) {
+    if (shot === "portada" && ambient) continue;
+    slides.push({ id: shot, label: GALLERY_LABELS[shot], shot });
+  }
+
+  return slides;
+}
 
 type ProductGalleryProps = {
   slug: string;
@@ -19,16 +44,16 @@ export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
 
-  const shots: FloorGalleryShot[] = [...GALLERY_SHOTS];
-  const activeShot = shots[active] ?? "portada";
+  const slides = useMemo(() => buildGallerySlides(slug), [slug]);
+  const activeSlide = slides[active] ?? slides[0];
 
   const goNext = useCallback(() => {
-    setActive((i) => (i + 1) % shots.length);
-  }, [shots.length]);
+    setActive((i) => (i + 1) % slides.length);
+  }, [slides.length]);
 
   const goPrev = useCallback(() => {
-    setActive((i) => (i - 1 + shots.length) % shots.length);
-  }, [shots.length]);
+    setActive((i) => (i - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   return (
     <>
@@ -41,27 +66,38 @@ export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
           >
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeShot}
+                key={activeSlide.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4 }}
                 className="absolute inset-0"
               >
-                <FloorImage
-                  slug={slug}
-                  shot={activeShot}
-                  alt={`${alt} — ${GALLERY_LABELS[activeShot]}`}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  priority={active === 0}
-                  className="transition duration-700 group-hover:scale-[1.02]"
-                />
+                {activeSlide.src ? (
+                  <Image
+                    src={activeSlide.src}
+                    alt={`${alt} — ${activeSlide.label}`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    priority={active === 0}
+                    className="object-cover transition duration-700 group-hover:scale-[1.02]"
+                  />
+                ) : (
+                  <FloorImage
+                    slug={slug}
+                    shot={activeSlide.shot ?? "salon"}
+                    alt={`${alt} — ${activeSlide.label}`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    priority={active === 0}
+                    className="transition duration-700 group-hover:scale-[1.02]"
+                  />
+                )}
               </motion.div>
             </AnimatePresence>
 
             <span className="absolute left-5 top-5 rounded-full bg-black/50 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-md">
-              {GALLERY_LABELS[activeShot]}
+              {activeSlide.label}
             </span>
 
             <span className="absolute bottom-5 right-5 flex items-center gap-2 rounded-full bg-black/50 px-4 py-2 text-xs font-medium text-white opacity-0 backdrop-blur-md transition group-hover:opacity-100">
@@ -69,7 +105,7 @@ export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
               Ampliar
             </span>
 
-            {shots.length > 1 && (
+            {slides.length > 1 && (
               <>
                 <button
                   type="button"
@@ -98,11 +134,11 @@ export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
           </button>
         </div>
 
-        {shots.length > 1 && (
+        {slides.length > 1 && (
           <div className="flex gap-3 overflow-x-auto pb-1">
-            {shots.map((shot, i) => (
+            {slides.map((slide, i) => (
               <button
-                key={shot}
+                key={slide.id}
                 type="button"
                 onClick={() => setActive(i)}
                 className={`relative shrink-0 overflow-hidden rounded-xl transition ${
@@ -112,16 +148,26 @@ export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
                 }`}
               >
                 <div className="relative h-20 w-20">
-                  <FloorImage
-                    slug={slug}
-                    shot={shot}
-                    alt={GALLERY_LABELS[shot]}
-                    fill
-                    sizes="80px"
-                  />
+                  {slide.src ? (
+                    <Image
+                      src={slide.src}
+                      alt={slide.label}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <FloorImage
+                      slug={slug}
+                      shot={slide.shot ?? "salon"}
+                      alt={slide.label}
+                      fill
+                      sizes="80px"
+                    />
+                  )}
                 </div>
                 <span className="mt-1 block max-w-20 truncate text-center text-[10px] text-muted">
-                  {GALLERY_LABELS[shot].split(" ")[0]}
+                  {slide.label.split(" ")[0]}
                 </span>
               </button>
             ))}
@@ -140,9 +186,7 @@ export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
             <div className="flex items-center justify-between px-5 py-4">
               <div>
                 <p className="text-sm font-medium text-white">{alt}</p>
-                <p className="text-xs text-white/60">
-                  {GALLERY_LABELS[activeShot]}
-                </p>
+                <p className="text-xs text-white/60">{activeSlide.label}</p>
               </div>
               <button
                 type="button"
@@ -154,26 +198,36 @@ export default function ProductGallery({ slug, alt }: ProductGalleryProps) {
               </button>
             </div>
             <div className="relative flex-1">
-              <FloorImage
-                slug={slug}
-                shot={activeShot}
-                alt={`${alt} — ${GALLERY_LABELS[activeShot]}`}
-                fill
-                sizes="100vw"
-                className="object-contain p-4"
-              />
+              {activeSlide.src ? (
+                <Image
+                  src={activeSlide.src}
+                  alt={`${alt} — ${activeSlide.label}`}
+                  fill
+                  sizes="100vw"
+                  className="object-contain p-4"
+                />
+              ) : (
+                <FloorImage
+                  slug={slug}
+                  shot={activeSlide.shot ?? "salon"}
+                  alt={`${alt} — ${activeSlide.label}`}
+                  fill
+                  sizes="100vw"
+                  className="object-contain p-4"
+                />
+              )}
             </div>
-            {shots.length > 1 && (
+            {slides.length > 1 && (
               <div className="flex justify-center gap-2 px-5 py-6">
-                {shots.map((shot, i) => (
+                {slides.map((slide, i) => (
                   <button
-                    key={`zoom-${shot}`}
+                    key={`zoom-${slide.id}`}
                     type="button"
                     onClick={() => setActive(i)}
                     className={`h-2 w-2 rounded-full transition ${
                       active === i ? "bg-white" : "bg-white/30"
                     }`}
-                    aria-label={GALLERY_LABELS[shot]}
+                    aria-label={slide.label}
                   />
                 ))}
               </div>

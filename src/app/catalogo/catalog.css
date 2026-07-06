@@ -1,0 +1,12 @@
+[data-page="catalogo"] .scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+[data-page="catalogo"] .scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+[data-page="catalogo"] input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}

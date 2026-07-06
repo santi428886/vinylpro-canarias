@@ -5,6 +5,7 @@ import type {
   FloorSystem,
   Product,
   ProductFilters,
+  ProductFormat,
   ProductSeed,
   SortOption,
 } from "@/types/product";
@@ -165,6 +166,29 @@ export function getUniqueAcabados(): string[] {
   return [...new Set(allProducts.map((p) => p.acabado))].sort();
 }
 
+export function getProductFormat(slug: string): ProductFormat {
+  if (slug.endsWith("-xl")) return "xl";
+  if (slug.endsWith("-compact")) return "compact";
+  return "estandar";
+}
+
+function matchesSearch(product: Product, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  const haystack = [
+    product.nombre,
+    product.slug,
+    product.tipo,
+    product.coleccion,
+    product.acabado,
+    product.descripcion,
+    product.temaColeccion,
+  ]
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(q);
+}
+
 function sortProducts(products: Product[], sort: SortOption): Product[] {
   const sorted = [...products];
   switch (sort) {
@@ -215,6 +239,14 @@ export function filterProducts(
     result = result.filter((p) =>
       filters.patternCategory!.includes(p.patternCategory),
     );
+  }
+  if (filters.formato?.length) {
+    result = result.filter((p) =>
+      filters.formato!.includes(getProductFormat(p.slug)),
+    );
+  }
+  if (filters.search?.trim()) {
+    result = result.filter((p) => matchesSearch(p, filters.search!));
   }
 
   return sortProducts(result, filters.sort ?? "popularidad");

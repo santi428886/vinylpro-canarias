@@ -1,5 +1,19 @@
 /** Galería fotográfica — public/images/products/{slug}/ */
 
+import {
+  resolveAmbientImage,
+  type AmbientSceneId,
+  ambientImagePath,
+} from "@/data/ambient-images";
+
+export { ambientImagePath, type AmbientSceneId };
+export {
+  AMBIENT_SCENES,
+  AMBIENT_SCENE_LABELS,
+  resolveAmbientImage,
+  resolveAmbientScene,
+} from "@/data/ambient-images";
+
 export const GALLERY_SHOTS = [
   "portada",
   "salon",
@@ -32,11 +46,23 @@ export function productGalleryPaths(slug: string): Record<FloorGalleryShot, stri
 }
 
 export function primaryFloorImage(slug: string): string {
-  return floorImagePath(slug, "portada");
+  return resolveAmbientImage(slug) ?? floorImagePath(slug, "salon");
 }
 
 export function hoverFloorImage(slug: string): string {
-  return floorImagePath(slug, "salon");
+  return floorImagePath(slug, "textura");
+}
+
+/** Tarjeta de catálogo: ambiente primero, textura al hover */
+export function catalogCardImages(slug: string): {
+  primary: string;
+  hover: string;
+} {
+  const ambient = resolveAmbientImage(slug);
+  return {
+    primary: ambient ?? floorImagePath(slug, "salon"),
+    hover: floorImagePath(slug, "textura"),
+  };
 }
 
 export const ROOM_IMAGE_BASE = "/images/rooms";

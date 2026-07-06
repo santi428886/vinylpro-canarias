@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
+import { ambientImagePath } from "@/data/ambient-images";
 import { buildWhatsAppUrl, DEFAULT_WHATSAPP_MESSAGE } from "@/lib/constants";
 
 export default function HomeHero() {
@@ -10,8 +11,8 @@ export default function HomeHero() {
     <section className="relative flex min-h-screen items-center overflow-hidden bg-foreground">
       <div className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2400&q=85"
-          alt="Interior premium con suelo vinílico"
+          src={ambientImagePath("gris-claro-premium")}
+          alt="Salón moderno con suelo vinílico premium"
           fill
           priority
           className="object-cover opacity-50"

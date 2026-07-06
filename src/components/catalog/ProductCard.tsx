@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import type { Product } from "@/types/product";
 import { COLLECTION_LABELS } from "@/types/product";
 import { buildWhatsAppUrl } from "@/lib/constants";
 import { formatEuro } from "@/lib/calculator";
 import { getSistemaLabel } from "@/lib/product-enrichment";
-import FloorImage from "@/components/ui/FloorImage";
+import CatalogProductImage from "./CatalogProductImage";
+import ProductFeatureBadges from "./ProductFeatureBadges";
 import FavoriteButton from "./FavoriteButton";
 import CompareToggle from "./CompareToggle";
-import ProductBadgeTag from "./ProductBadgeTag";
-import StarRating from "./StarRating";
 
 type ProductCardProps = {
   product: Product;
@@ -23,94 +23,80 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="group relative flex min-h-[520px] flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/[0.06] transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:ring-black/10 sm:min-h-[560px]"
+      transition={{
+        delay: Math.min(index * 0.04, 0.4),
+        duration: 0.55,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-shadow duration-500 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)]"
     >
       <Link
         href={`/modelo/${product.slug}`}
-        className="relative flex-[7] min-h-0 overflow-hidden bg-neutral-100"
+        className="relative block aspect-[4/5] overflow-hidden bg-neutral-100 sm:aspect-[3/4] lg:aspect-[4/5]"
       >
-        <div className="absolute inset-3 overflow-hidden rounded-xl ring-1 ring-black/[0.08] sm:inset-4">
-          <FloorImage
-            slug={product.slug}
-            shot="portada"
-            alt={product.nombre}
-            fill
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            className="transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:opacity-0"
-          />
-          <FloorImage
-            slug={product.slug}
-            shot="salon"
-            alt={`${product.nombre} en salón`}
-            fill
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            className="opacity-0 transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:opacity-100"
-          />
+        <CatalogProductImage
+          slug={product.slug}
+          alt={product.nombre}
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          className="transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] group-hover:opacity-0"
+          hoverClassName="opacity-0 transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] group-hover:opacity-100"
+        />
+
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+
+        <div className="absolute left-4 top-4 z-10 max-w-[85%]">
+          <ProductFeatureBadges product={product} />
         </div>
 
-        <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
-          {product.badge && <ProductBadgeTag badge={product.badge} />}
-          <span className="rounded-full bg-white/95 px-3 py-1 text-[11px] font-medium text-foreground shadow-sm backdrop-blur-sm">
-            Foto real
-          </span>
-        </div>
-
-        <div className="absolute right-4 top-4 z-10 flex flex-col gap-2">
+        <div className="absolute right-4 top-4 z-10 flex flex-col gap-1.5 opacity-0 transition-all duration-300 group-hover:opacity-100">
           <FavoriteButton slug={product.slug} />
           <CompareToggle slug={product.slug} />
         </div>
+
+        <span className="absolute bottom-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-foreground opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-1">
+          <ArrowUpRight className="h-4 w-4" aria-hidden />
+        </span>
       </Link>
 
-      <div className="flex flex-[3] flex-col p-5 sm:p-6">
-        <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-surface px-3 py-1 text-xs text-muted">
-            {COLLECTION_LABELS[product.temaColeccion]}
-          </span>
-          <span className="rounded-full bg-surface px-3 py-1 text-xs text-muted">
-            {getSistemaLabel(product.sistema)}
-          </span>
-          <span className="rounded-full bg-surface px-3 py-1 text-xs capitalize text-muted">
-            {product.color}
-          </span>
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.12em] text-muted">
+          <span>{COLLECTION_LABELS[product.temaColeccion]}</span>
+          <span className="text-border">·</span>
+          <span>{getSistemaLabel(product.sistema)}</span>
         </div>
 
-        <Link href={`/modelo/${product.slug}`}>
-          <h3 className="mt-4 text-xl font-semibold tracking-tight text-foreground transition group-hover:text-accent sm:text-2xl">
+        <Link href={`/modelo/${product.slug}`} className="mt-2.5 block">
+          <h3 className="text-lg font-semibold leading-snug tracking-tight text-foreground transition-colors duration-300 group-hover:text-accent sm:text-xl">
             {product.nombre}
           </h3>
         </Link>
 
-        <p className="mt-3 flex-1 text-sm leading-relaxed text-muted line-clamp-2 sm:text-base">
+        <p className="mt-2 line-clamp-2 flex-1 text-sm leading-relaxed text-muted">
           {product.descripcion}
         </p>
 
-        <div className="mt-4 space-y-1">
-          <StarRating value={product.ratings.resistencia} label="Resistencia" />
-          <StarRating value={product.ratings.agua} label="Agua" />
+        <div className="mt-5 flex items-end justify-between gap-4 border-t border-border/80 pt-5">
+          <div>
+            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted">
+              Instalado
+            </p>
+            <p className="mt-0.5 text-2xl font-semibold tracking-tight text-foreground">
+              {formatEuro(product.precio)}
+              <span className="text-sm font-normal text-muted"> /m²</span>
+            </p>
+          </div>
+          <a
+            href={buildWhatsAppUrl(whatsappMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="shrink-0 rounded-full border border-foreground/15 px-4 py-2 text-xs font-medium text-foreground transition-all duration-200 hover:border-foreground hover:bg-foreground hover:text-white"
+          >
+            Consultar
+          </a>
         </div>
-
-        <div className="mt-6 border-t border-border pt-6">
-          <p className="text-xs uppercase tracking-wider text-muted">Instalado</p>
-          <p className="text-2xl font-semibold text-foreground sm:text-3xl">
-            {formatEuro(product.precio)}
-            <span className="text-sm font-normal text-muted"> /m²</span>
-          </p>
-          <p className="mt-1 text-xs text-muted">
-            Material: {formatEuro(product.precioMaterial)}/m²
-          </p>
-        </div>
-
-        <a
-          href={buildWhatsAppUrl(whatsappMessage)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-white transition hover:bg-foreground/90"
-        >
-          Pedir este modelo
-        </a>
       </div>
     </motion.article>
   );

@@ -1,22 +1,18 @@
 "use client";
 
+import { SlidersHorizontal } from "lucide-react";
 import type {
-  CollectionTheme,
   ColorTone,
-  FloorSystem,
-  FloorType,
-  PriceRange,
   ProductFilters,
-  SortOption,
+  ProductFormat,
   UsageType,
 } from "@/types/product";
-import { COLLECTION_LABELS } from "@/types/product";
 import { getUniqueAcabados } from "@/lib/products";
+import { ROOM_OPTIONS, type RoomId } from "@/data/catalog-visual";
 
 type CatalogFiltersProps = {
   filters: ProductFilters;
   onChange: (filters: ProductFilters) => void;
-  total: number;
 };
 
 function toggleFilter<T>(current: T[] | undefined, value: T): T[] {
@@ -26,41 +22,19 @@ function toggleFilter<T>(current: T[] | undefined, value: T): T[] {
     : [...list, value];
 }
 
-function FilterPills<T extends string>({
+function FilterSection({
   title,
-  options,
-  selected,
-  onToggle,
+  children,
 }: {
   title: string;
-  options: { value: T; label: string }[];
-  selected?: T[];
-  onToggle: (value: T) => void;
+  children: React.ReactNode;
 }) {
   return (
-    <div>
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-muted">
+    <div className="border-b border-border/80 pb-6 last:border-0 last:pb-0">
+      <p className="mb-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
         {title}
       </p>
-      <div className="flex flex-wrap gap-2">
-        {options.map((opt) => {
-          const active = selected?.includes(opt.value);
-          return (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => onToggle(opt.value)}
-              className={`rounded-2xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
-                active
-                  ? "bg-foreground text-white shadow-md"
-                  : "bg-white text-muted hover:bg-surface hover:text-foreground"
-              }`}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
+      {children}
     </div>
   );
 }
@@ -71,170 +45,185 @@ const colorOptions: { value: ColorTone; label: string }[] = [
   { value: "oscuro", label: "Oscuro" },
 ];
 
-const typeOptions: { value: FloorType; label: string }[] = [
-  { value: "roble", label: "Roble" },
-  { value: "espiga", label: "Espiga" },
-  { value: "piedra", label: "Piedra" },
-  { value: "hormigon", label: "Hormigón" },
+const formatoOptions: { value: ProductFormat; label: string }[] = [
+  { value: "estandar", label: "Lama estándar" },
+  { value: "xl", label: "Lama XL" },
+  { value: "compact", label: "Compact" },
 ];
 
-const usageOptions: { value: UsageType; label: string }[] = [
-  { value: "vivienda", label: "Vivienda" },
-  { value: "bano", label: "Baño" },
-  { value: "cocina", label: "Cocina" },
-  { value: "local", label: "Local" },
-];
-
-const sistemaOptions: { value: FloorSystem; label: string }[] = [
-  { value: "spc-click", label: "SPC Click" },
-  { value: "adhesivo", label: "Adhesivo" },
-  { value: "rollo", label: "En rollo" },
-];
-
-const collectionOptions: { value: CollectionTheme; label: string }[] = (
-  Object.entries(COLLECTION_LABELS) as [CollectionTheme, string][]
-).map(([value, label]) => ({ value, label }));
-
-const priceOptions: { value: PriceRange; label: string }[] = [
-  { value: "economico", label: "Económico" },
-  { value: "medio", label: "Medio" },
-  { value: "premium", label: "Premium" },
-];
-
-const sortOptions: { value: SortOption; label: string }[] = [
-  { value: "popularidad", label: "Popularidad" },
-  { value: "precio", label: "Precio" },
-  { value: "nombre", label: "Nombre" },
-];
+const roomToUso: Record<RoomId, UsageType> = {
+  salon: "vivienda",
+  cocina: "cocina",
+  dormitorio: "vivienda",
+  bano: "bano",
+};
 
 export default function CatalogFilters({
   filters,
   onChange,
-  total,
 }: CatalogFiltersProps) {
-  const acabados = getUniqueAcabados().slice(0, 8).map((a) => ({
-    value: a,
-    label: a.length > 20 ? `${a.slice(0, 18)}…` : a,
-  }));
+  const acabados = getUniqueAcabados()
+    .slice(0, 10)
+    .map((a) => ({
+      value: a,
+      label: a.length > 22 ? `${a.slice(0, 20)}…` : a,
+    }));
 
   const hasFilters =
     filters.color?.length ||
-    filters.tipo?.length ||
-    filters.uso?.length ||
-    filters.sistema?.length ||
-    filters.coleccion?.length ||
     filters.acabado?.length ||
-    filters.precioRange?.length ||
-    filters.patternCategory?.length ||
+    filters.formato?.length ||
+    filters.room ||
     filters.visualColor ||
-    filters.room;
+    filters.patternCategory?.length ||
+    filters.search?.trim();
+
+  const clearAll = () =>
+    onChange({
+      sort: filters.sort,
+      search: "",
+      visualColor: null,
+      room: null,
+      patternCategory: undefined,
+      color: undefined,
+      acabado: undefined,
+      formato: undefined,
+      uso: undefined,
+    });
 
   return (
-    <div className="space-y-8 rounded-3xl border border-border bg-surface/50 p-6 sm:p-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-lg font-semibold text-foreground">
-          {total} modelos
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {sortOptions.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => onChange({ ...filters, sort: opt.value })}
-              className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                (filters.sort ?? "popularidad") === opt.value
-                  ? "bg-accent text-white"
-                  : "bg-white text-muted hover:text-foreground"
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+    <div className="rounded-2xl border border-border/80 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+      <div className="mb-6 flex items-center gap-2">
+        <SlidersHorizontal className="h-4 w-4 text-muted" aria-hidden />
+        <h3 className="text-sm font-semibold tracking-tight text-foreground">
+          Filtros
+        </h3>
       </div>
 
-      <FilterPills
-        title="Colección"
-        options={collectionOptions}
-        selected={filters.coleccion}
-        onToggle={(v) =>
-          onChange({ ...filters, coleccion: toggleFilter(filters.coleccion, v) })
-        }
-      />
+      <div className="space-y-6">
+        <FilterSection title="Color">
+          <div className="flex flex-wrap gap-2">
+            {colorOptions.map((opt) => {
+              const active = filters.color?.includes(opt.value);
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() =>
+                    onChange({
+                      ...filters,
+                      color: toggleFilter(filters.color, opt.value),
+                    })
+                  }
+                  className={`rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 ${
+                    active
+                      ? "bg-foreground text-white"
+                      : "bg-surface text-muted hover:bg-border/60 hover:text-foreground"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </FilterSection>
 
-      <FilterPills
-        title="Color"
-        options={colorOptions}
-        selected={filters.color}
-        onToggle={(v) =>
-          onChange({ ...filters, color: toggleFilter(filters.color, v) })
-        }
-      />
+        {acabados.length > 0 && (
+          <FilterSection title="Acabado">
+            <div className="flex flex-wrap gap-2">
+              {acabados.map((opt) => {
+                const active = filters.acabado?.includes(opt.value);
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() =>
+                      onChange({
+                        ...filters,
+                        acabado: toggleFilter(filters.acabado, opt.value),
+                      })
+                    }
+                    className={`rounded-full px-3.5 py-2 text-xs font-medium transition-all duration-200 ${
+                      active
+                        ? "bg-foreground text-white"
+                        : "bg-surface text-muted hover:bg-border/60 hover:text-foreground"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
+          </FilterSection>
+        )}
 
-      <FilterPills
-        title="Tipo"
-        options={typeOptions}
-        selected={filters.tipo}
-        onToggle={(v) =>
-          onChange({ ...filters, tipo: toggleFilter(filters.tipo, v) })
-        }
-      />
+        <FilterSection title="Estancia">
+          <div className="grid grid-cols-2 gap-2">
+            {ROOM_OPTIONS.map((room) => {
+              const active = filters.room === room.id;
+              return (
+                <button
+                  key={room.id}
+                  type="button"
+                  onClick={() => {
+                    if (active) {
+                      onChange({ ...filters, uso: undefined, room: null });
+                    } else {
+                      onChange({
+                        ...filters,
+                        uso: [roomToUso[room.id]],
+                        room: room.id,
+                      });
+                    }
+                  }}
+                  className={`rounded-xl px-3 py-2.5 text-left text-xs font-medium transition-all duration-200 ${
+                    active
+                      ? "bg-foreground text-white"
+                      : "bg-surface text-muted hover:bg-border/60 hover:text-foreground"
+                  }`}
+                >
+                  {room.label}
+                </button>
+              );
+            })}
+          </div>
+        </FilterSection>
 
-      <FilterPills
-        title="Habitaciones"
-        options={usageOptions}
-        selected={filters.uso}
-        onToggle={(v) =>
-          onChange({ ...filters, uso: toggleFilter(filters.uso, v) })
-        }
-      />
-
-      <FilterPills
-        title="Precio"
-        options={priceOptions}
-        selected={filters.precioRange}
-        onToggle={(v) =>
-          onChange({
-            ...filters,
-            precioRange: toggleFilter(filters.precioRange, v),
-          })
-        }
-      />
-
-      <FilterPills
-        title="Sistema"
-        options={sistemaOptions}
-        selected={filters.sistema}
-        onToggle={(v) =>
-          onChange({ ...filters, sistema: toggleFilter(filters.sistema, v) })
-        }
-      />
-
-      {acabados.length > 0 && (
-        <FilterPills
-          title="Acabado"
-          options={acabados}
-          selected={filters.acabado}
-          onToggle={(v) =>
-            onChange({ ...filters, acabado: toggleFilter(filters.acabado, v) })
-          }
-        />
-      )}
+        <FilterSection title="Formato">
+          <div className="flex flex-col gap-2">
+            {formatoOptions.map((opt) => {
+              const active = filters.formato?.includes(opt.value);
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() =>
+                    onChange({
+                      ...filters,
+                      formato: toggleFilter(filters.formato, opt.value),
+                    })
+                  }
+                  className={`rounded-xl px-4 py-2.5 text-left text-xs font-medium transition-all duration-200 ${
+                    active
+                      ? "bg-foreground text-white"
+                      : "bg-surface text-muted hover:bg-border/60 hover:text-foreground"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </FilterSection>
+      </div>
 
       {hasFilters && (
         <button
           type="button"
-          onClick={() =>
-            onChange({
-              sort: filters.sort,
-              visualColor: null,
-              room: null,
-              patternCategory: undefined,
-            })
-          }
-          className="text-sm font-medium text-accent hover:underline"
+          onClick={clearAll}
+          className="mt-6 w-full rounded-xl border border-border py-2.5 text-xs font-medium text-muted transition hover:border-foreground/20 hover:text-foreground"
         >
-          Limpiar todos los filtros
+          Limpiar filtros
         </button>
       )}
     </div>
