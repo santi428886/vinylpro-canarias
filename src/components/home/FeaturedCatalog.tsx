@@ -21,55 +21,49 @@ export default function FeaturedCatalog() {
           <SectionHeader
             label="Catálogo"
             title="Modelos destacados"
-            description="Más de 100 modelos disponibles. Material e instalación incluidos por m²."
+            description="15 modelos seleccionados. Material e instalación incluidos por m²."
           />
         </FadeIn>
 
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product, i) => (
             <FadeIn key={product.id} delay={i * 0.08}>
-              <article className="group flex flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-border/80 transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)]">
+              <article className="group flex flex-col overflow-hidden rounded-xl bg-white ring-1 ring-border/70 transition-all duration-300 hover:shadow-[0_12px_32px_-10px_rgba(0,0,0,0.1)]">
                 <Link
                   href={`/modelo/${product.slug}`}
-                  className="relative block aspect-[4/5] overflow-hidden bg-neutral-100"
+                  className="relative block aspect-[4/3] overflow-hidden bg-neutral-100"
                 >
                   <CatalogProductImage
                     slug={product.slug}
                     alt={product.nombre}
                     sizes="(max-width: 640px) 100vw, 33vw"
-                    className="transition duration-700 group-hover:scale-[1.04]"
+                    className="transition duration-700 group-hover:scale-[1.03]"
                   />
-                  <div className="absolute left-4 top-4 z-10">
+                  <div className="absolute left-3 top-3 z-10 scale-90 origin-top-left">
                     <ProductFeatureBadges product={product} />
                   </div>
                 </Link>
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <ProductRating />
-                    <ProductAvailabilityBadges />
-                  </div>
-                  <p className="mt-4 text-xs font-medium uppercase tracking-wider text-muted">
+                <div className="flex flex-1 flex-col p-4">
+                  <p className="text-[11px] font-medium capitalize tracking-wide text-muted">
                     {product.tipo} · {product.color}
                   </p>
                   <Link href={`/modelo/${product.slug}`}>
-                    <h3 className="mt-2 text-lg font-semibold text-foreground transition group-hover:text-accent">
+                    <h3 className="mt-1.5 text-base font-semibold text-foreground transition group-hover:text-accent">
                       {product.nombre}
                     </h3>
                   </Link>
-                  <p className="mt-3 line-clamp-2 flex-1 text-sm text-muted">
-                    {product.descripcion}
-                  </p>
-                  <div className="mt-5 flex items-end justify-between gap-4 border-t border-border/80 pt-5">
-                    <p className="text-xl font-semibold text-foreground">
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <ProductRating className="scale-90 origin-left" />
+                    <ProductAvailabilityBadges className="scale-90 origin-left" />
+                  </div>
+                  <div className="mt-3 flex items-end justify-between gap-3 border-t border-border/60 pt-3">
+                    <p className="text-lg font-semibold text-foreground">
                       {formatEuro(product.precio)}
-                      <span className="text-sm font-normal text-muted">
-                        {" "}
-                        /m² instalado
-                      </span>
+                      <span className="text-sm font-normal text-muted"> /m²</span>
                     </p>
                     <Link
                       href={`/modelo/${product.slug}`}
-                      className="shrink-0 rounded-full border border-foreground/15 px-4 py-2 text-xs font-medium text-foreground transition-all duration-200 hover:border-foreground hover:bg-foreground hover:text-white"
+                      className="shrink-0 rounded-full border border-foreground/15 px-3.5 py-1.5 text-xs font-medium text-foreground transition-all duration-200 hover:border-foreground hover:bg-foreground hover:text-white"
                     >
                       Ver modelo
                     </Link>

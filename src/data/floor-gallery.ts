@@ -53,15 +53,21 @@ export function hoverFloorImage(slug: string): string {
   return floorImagePath(slug, "textura");
 }
 
-/** Tarjeta de catálogo: ambiente primero, textura al hover */
+/** Tarjeta de catálogo: interiores con piso instalado (evita texturas sueltas) */
 export function catalogCardImages(slug: string): {
   primary: string;
   hover: string;
 } {
   const ambient = resolveAmbientImage(slug);
+  if (ambient) {
+    return {
+      primary: ambient,
+      hover: floorImagePath(slug, "salon"),
+    };
+  }
   return {
-    primary: ambient ?? floorImagePath(slug, "salon"),
-    hover: floorImagePath(slug, "textura"),
+    primary: floorImagePath(slug, "salon"),
+    hover: floorImagePath(slug, "cocina"),
   };
 }
 

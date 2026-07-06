@@ -46,6 +46,8 @@ export const PRODUCT_AMBIENT_SCENE: Partial<Record<string, AmbientSceneId>> = {
   "hormigon-loft-claro": "gris-claro-premium",
   "roble-rustico-natural": "roble-miel",
   "roble-rustico-tostado": "roble-miel",
+  "espiga-paris-miel": "roble-miel",
+  "marmol-carrara-blanco": "beige-arena",
 };
 
 export function resolveAmbientScene(slug: string): AmbientSceneId | null {

@@ -11,14 +11,15 @@ export default function HomeHero() {
     <section className="relative flex min-h-screen items-center overflow-hidden bg-foreground">
       <div className="absolute inset-0">
         <Image
-          src={ambientImagePath("gris-claro-premium")}
-          alt="Salón moderno con suelo vinílico premium"
+          src={ambientImagePath("roble-natural")}
+          alt="Salón moderno con suelo vinílico premium instalado"
           fill
           priority
-          className="object-cover object-[center_75%]"
+          className="object-cover object-[center_88%]"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/25 to-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
       </div>
 
       <div className="relative mx-auto w-full max-w-7xl px-5 pb-24 pt-32 sm:px-8 lg:px-12 lg:pt-40">
@@ -46,11 +47,11 @@ export default function HomeHero() {
             </div>
           </div>
 
-          <h1 className="text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-7xl">
+          <h1 className="text-4xl font-semibold leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-7xl">
             Renueva cualquier espacio con suelo vinílico premium.
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70 sm:text-xl">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.3)] sm:text-xl">
             Instalación profesional en Gran Canaria con materiales de primera
             calidad y presupuesto gratuito.
           </p>
@@ -78,7 +79,7 @@ export default function HomeHero() {
           className="mt-20 hidden gap-12 border-t border-white/10 pt-8 sm:flex"
         >
           {[
-            { value: "100+", label: "Modelos" },
+            { value: "15", label: "Modelos" },
             { value: "24h", label: "Presupuesto" },
             { value: "15-20", label: "Años garantía" },
           ].map((stat) => (

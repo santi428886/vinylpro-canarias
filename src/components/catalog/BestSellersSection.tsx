@@ -44,12 +44,12 @@ export default function BestSellersSection() {
               href={`/modelo/${product.slug}`}
               className="group block overflow-hidden rounded-2xl bg-white ring-1 ring-border/80 transition-all duration-500 hover:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.1)] hover:ring-foreground/10"
             >
-              <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100">
+              <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
                 <CatalogProductImage
                   slug={product.slug}
                   alt={labelBySlug[product.slug] ?? product.nombre}
                   sizes="(max-width: 640px) 300px, 33vw"
-                  className="transition-transform duration-[900ms] group-hover:scale-[1.04]"
+                  className="transition-transform duration-700 group-hover:scale-[1.03]"
                 />
                 <div className="absolute left-4 top-4 z-10">
                   <ProductFeatureBadges product={product} />

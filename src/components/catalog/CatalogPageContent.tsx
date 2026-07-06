@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { allProducts, filterProducts } from "@/lib/products";
+import { catalogProducts, filterProducts } from "@/lib/products";
 import type { FloorSystem, ProductFilters, SortOption } from "@/types/product";
 import type { RoomId, VisualColorId } from "@/data/catalog-visual";
 import CatalogFilters from "./CatalogFilters";
@@ -33,7 +33,7 @@ export default function CatalogPageContent() {
   }, []);
 
   const filtered = useMemo(
-    () => filterProducts(allProducts, filters),
+    () => filterProducts(catalogProducts, filters),
     [filters],
   );
 
@@ -130,9 +130,9 @@ export default function CatalogPageContent() {
                   </button>
                 </div>
               ) : (
-                <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 xl:grid-cols-2 2xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                   {filtered.map((product, i) => (
-                    <ProductCard key={product.id} product={product} index={i} />
+                    <ProductCard key={product.id} product={product} index={i} compact />
                   ))}
                 </div>
               )}

@@ -126,9 +126,6 @@ export const BEST_SELLER_ITEMS: { slug: string; label: string }[] = [
   { slug: "roble-natural-claro", label: "Roble Natural Claro" },
   { slug: "espiga-heritage-natural", label: "Espiga Roble Natural" },
   { slug: "roble-gris-nordico-plata", label: "Gris Nórdico Plata" },
-  { slug: "espiga-milan-nogal", label: "Nogal Oscuro Espiga" },
-  { slug: "cemento-urban-blanco", label: "Hormigón Claro" },
-  { slug: "piedra-caliza-marfil", label: "Piedra Beige Marfil" },
 ];
 
 export function categoriesForVisualColor(id: VisualColorId): VinylFloorCategory[] {

@@ -1,4 +1,5 @@
 import productSeeds from "@/data/product-seeds.json";
+import { CATALOG_PRODUCT_SLUGS } from "@/data/catalog-products";
 import { enrichProduct } from "@/lib/product-enrichment";
 import { resolvePriceRange } from "@/lib/product-enrichment";
 import type {
@@ -70,72 +71,18 @@ function expandSeeds(seeds: ProductSeed[]): Product[] {
   return products;
 }
 
-function productCore(
-  p: Product,
-): Omit<
-  Product,
-  | "badge"
-  | "ratings"
-  | "nivelUso"
-  | "habitaciones"
-  | "temaColeccion"
-  | "patternCategory"
-  | "precioMaterial"
-> {
-  const {
-    badge: _badge,
-    ratings: _ratings,
-    nivelUso: _nivelUso,
-    habitaciones: _habitaciones,
-    temaColeccion: _tema,
-    patternCategory: _pattern,
-    precioMaterial: _material,
-    ...core
-  } = p;
-  return core;
-}
+const seedProducts = expandSeeds(productSeeds as ProductSeed[]);
 
-function expandVariants(products: Product[]): Product[] {
-  const extended = [...products];
-
-  for (const p of products) {
-    extended.push(
-      enrichProduct({
-        ...productCore(p),
-        id: `${p.id}-xl`,
-        slug: `${p.slug}-xl`,
-        nombre: `${p.nombre} XL`,
-        precio: p.precio + 2.5,
-        grosor: "8 mm",
-        acabado: `${p.acabado} reforzado`,
-        sistema: p.sistema === "adhesivo" ? "spc-click" : p.sistema,
-        popularidad: p.popularidad - 8,
-        descripcion: `${p.descripcion} Versión XL con mayor grosor y resistencia.`,
-      }),
-    );
-
-    extended.push(
-      enrichProduct({
-        ...productCore(p),
-        id: `${p.id}-compact`,
-        slug: `${p.slug}-compact`,
-        nombre: `${p.nombre} Compact`,
-        precio: p.precio - 1.5,
-        grosor: "2.5 mm",
-        acabado: `${p.acabado} compacto`,
-        sistema: "adhesivo",
-        popularidad: p.popularidad - 12,
-        descripcion: `${p.descripcion} Versión compacta ideal para reformas rápidas.`,
-      }),
-    );
+/** Catálogo activo: 15 modelos reales */
+export const catalogProducts: Product[] = CATALOG_PRODUCT_SLUGS.map((slug) => {
+  const product = seedProducts.find((p) => p.slug === slug);
+  if (!product) {
+    throw new Error(`Catálogo: slug no encontrado en seeds — ${slug}`);
   }
+  return product;
+});
 
-  return extended;
-}
-
-export const allProducts: Product[] = expandVariants(
-  expandSeeds(productSeeds as ProductSeed[]),
-);
+export const allProducts: Product[] = catalogProducts;
 
 export function getProductBySlug(slug: string): Product | undefined {
   return allProducts.find((p) => p.slug === slug);
